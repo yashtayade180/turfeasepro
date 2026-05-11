@@ -1,14 +1,10 @@
 import React from 'react';
+import { useParams, Navigate } from 'react-router-dom';
 
+// Booking is handled inline on TurfDetailPage — this redirects for legacy routes
 const BookingPage: React.FC = () => {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold mb-8">Book Turf</h1>
-      <div className="text-center py-12">
-        <p className="text-gray-600">Booking functionality will be implemented here</p>
-      </div>
-    </div>
-  );
+  const { turfId } = useParams<{ turfId: string }>();
+  return <Navigate to={`/turfs/${turfId}`} replace />;
 };
 
 export default BookingPage;
