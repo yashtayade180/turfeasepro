@@ -35,12 +35,12 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'as'>,
-    Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'as'>,
     VariantProps<typeof buttonVariants> {
   as?: React.ElementType;
   loading?: boolean;
   icon?: React.ReactNode;
-  to?: string; // For Link compatibility
+  to?: string;
+  href?: string;
 }
 
 const Button = React.forwardRef<HTMLElement, ButtonProps>(
