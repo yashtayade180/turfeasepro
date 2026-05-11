@@ -31,7 +31,7 @@ export class BookingService {
 
   async getUserBookings(userId: string) {
     return await Booking.find({ user: userId })
-      .populate("turf", "name address pricePerHour")
+      .populate("turf", "name address pricePerHour images")
       .sort({ startTime: -1 });
   }
 
