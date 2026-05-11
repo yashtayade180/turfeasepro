@@ -12,7 +12,10 @@ import { adminRoutes } from "./modules/admin/admin.controller";
 const buildApp = () => {
   const app = Fastify({ logger: true });
 
-  app.register(cors, { origin: "*" });
+  const allowedOrigins = process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(",")
+    : ["http://localhost:3001"];
+  app.register(cors, { origin: allowedOrigins, credentials: true });
   app.register(helmet);
 
   app.register(authController, { prefix: "/api/auth" }); // 👈 fix

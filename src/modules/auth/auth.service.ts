@@ -13,11 +13,7 @@ export class AuthService {
 
   async login(email: string, password: string) {
     const user = await User.findOne({ email });
-    console.log("User from DB:", user);
-  
     if (!user) throw new Error("Invalid credentials");
-  
-    console.log("Has comparePassword?", typeof (user as any).comparePassword);
     const isMatch = await (user as any).comparePassword(password);
     if (!isMatch) throw new Error("Invalid credentials");
     return this.generateToken(user);

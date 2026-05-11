@@ -4,12 +4,12 @@ import * as Joi from "joi";
 dotenv.config();
 
 const envSchema = Joi.object({
-  PORT: Joi.number().default(5000),
+  PORT: Joi.number().default(3000),
   MONGO_URI: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
-  RAZORPAY_KEY_ID: Joi.string().required(),
-  RAZORPAY_KEY_SECRET: Joi.string().required(),
-  REDIS_URL: Joi.string().required()
+  RAZORPAY_KEY_ID: Joi.string().optional(),
+  RAZORPAY_KEY_SECRET: Joi.string().optional(),
+  REDIS_URL: Joi.string().optional()
 }).unknown();
 
 const { error, value: env } = envSchema.validate(process.env);
