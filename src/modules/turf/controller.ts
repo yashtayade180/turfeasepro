@@ -1,23 +1,40 @@
 import { FastifyInstance } from "fastify";
 import { TurfService } from "./service";
 import { jwtMiddleware } from "../auth/jwt.middleware";
+import { Booking } from "../booking/booking.model";
+import { Turf } from "./model";
 
 const turfService = new TurfService();
 
 export const turfController = async (app: FastifyInstance) => {
+  // Partner: Get own turfs
+  app.get(
+    "/mine",
+    { preHandler: jwtMiddleware(["partner", "admin"]) },
+    async (req: any, reply) => {
+      const turfs = await Turf.find({ owner: req.user.id }).sort({ createdAt: -1 });
+      reply.send(turfs);
+    }
+  );
+
   // Partner: Create turf
   app.post(
     "/",
     { preHandler: jwtMiddleware(["partner"]) },
     async (req: any, reply) => {
       try {
-        const { name, address, pricePerHour, lat, lng } = req.body;
+        const { name, address, pricePerHour, lat, lng, sports, amenities, description, images, surfaceType } = req.body;
         const turf = await turfService.createTurf(
           {
             name,
             address,
             pricePerHour,
             location: { type: "Point", coordinates: [lng, lat] },
+            sports: sports || [],
+            amenities: amenities || [],
+            description: description || "",
+            images: images || [],
+            surfaceType: surfaceType || "Natural Grass",
           },
           req.user.id
         );
@@ -28,7 +45,7 @@ export const turfController = async (app: FastifyInstance) => {
     }
   );
 
-  // User: List turfs
+  // User: List approved turfs
   app.get("/", async (_, reply) => {
     const turfs = await turfService.getTurfs();
     reply.send(turfs);
@@ -49,6 +66,27 @@ export const turfController = async (app: FastifyInstance) => {
     }
   });
 
+  // Public: Get available slots for a turf on a date
+  app.get("/:id/slots", async (req: any, reply) => {
+    try {
+      const { date } = req.query as any;
+      if (!date) return reply.status(400).send({ message: "date query param required (YYYY-MM-DD)" });
+
+      const dayStart = new Date(`${date}T00:00:00.000Z`);
+      const dayEnd = new Date(`${date}T23:59:59.999Z`);
+
+      const bookings = await Booking.find({
+        turf: req.params.id,
+        status: "confirmed",
+        startTime: { $gte: dayStart, $lt: dayEnd },
+      }).select("startTime endTime");
+
+      reply.send(bookings);
+    } catch (err: any) {
+      reply.status(400).send({ message: err.message });
+    }
+  });
+
   // Admin: Approve turf
   app.patch(
     "/:id/approve",
@@ -63,7 +101,7 @@ export const turfController = async (app: FastifyInstance) => {
     }
   );
 
-  // Get turf by ID
+  // Get turf by ID (public)
   app.get("/:id", async (req: any, reply) => {
     const turf = await turfService.getById(req.params.id);
     if (!turf) return reply.status(404).send({ message: "Turf not found" });
