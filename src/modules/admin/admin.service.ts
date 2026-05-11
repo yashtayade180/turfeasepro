@@ -5,7 +5,7 @@ import { AdminAction } from "./admin.model";
 
 export class AdminService {
   async approveTurf(adminId: string, turfId: string) {
-    const turf = await Turf.findByIdAndUpdate(turfId, { isApproved: true }, { new: true });
+    const turf = await Turf.findByIdAndUpdate(turfId, { approved: true }, { new: true });
     if (!turf) throw new Error("Turf not found");
 
     await AdminAction.create({
@@ -18,7 +18,7 @@ export class AdminService {
   }
 
   async rejectTurf(adminId: string, turfId: string, reason?: string) {
-    const turf = await Turf.findByIdAndUpdate(turfId, { isApproved: false }, { new: true });
+    const turf = await Turf.findByIdAndUpdate(turfId, { approved: false }, { new: true });
     if (!turf) throw new Error("Turf not found");
 
     await AdminAction.create({
@@ -59,7 +59,7 @@ export class AdminService {
   }
 
   async getAllBookings() {
-    return Booking.find().populate("userId turfId");
+    return Booking.find().populate("user", "name email").populate("turf", "name address");
   }
 
   async getRevenueSummary() {
