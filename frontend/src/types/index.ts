@@ -11,14 +11,16 @@ export interface Turf {
   name: string;
   address: string;
   pricePerHour: number;
-  location: {
-    type: 'Point';
-    coordinates: [number, number];
-  };
+  location: { type: 'Point'; coordinates: [number, number] };
   owner: User;
   approved: boolean;
   rating: number;
   ratingCount: number;
+  sports: string[];
+  amenities: string[];
+  description: string;
+  images: string[];
+  surfaceType: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -35,15 +37,9 @@ export interface Booking {
   updatedAt: string;
 }
 
-export interface Payment {
-  _id: string;
-  booking: Booking;
-  user: User;
-  amount: number;
-  status: 'pending' | 'completed' | 'failed';
-  razorpayOrderId?: string;
-  createdAt: string;
-  updatedAt: string;
+export interface BookedSlot {
+  startTime: string;
+  endTime: string;
 }
 
 export interface Review {
@@ -52,6 +48,17 @@ export interface Review {
   user: User;
   rating: number;
   comment: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Payment {
+  _id: string;
+  booking: Booking;
+  user: User;
+  amount: number;
+  status: 'pending' | 'success' | 'failed';
+  transactionId?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -79,6 +86,10 @@ export interface TurfFormData {
   pricePerHour: number;
   lat: number;
   lng: number;
+  sports: string[];
+  amenities: string[];
+  description: string;
+  surfaceType: string;
 }
 
 export interface BookingFormData {
@@ -90,4 +101,11 @@ export interface BookingFormData {
 export interface ReviewFormData {
   rating: number;
   comment: string;
+}
+
+export interface AdminStats {
+  totalUsers: number;
+  activeTurfs: number;
+  pendingApprovals: number;
+  totalBookings: number;
 }

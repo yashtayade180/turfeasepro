@@ -1,5 +1,5 @@
 import { api } from './api';
-import { Turf, TurfFormData } from '../types';
+import { Turf, TurfFormData, BookedSlot } from '../types';
 
 export const turfService = {
   async getTurfs(): Promise<Turf[]> {
@@ -13,9 +13,17 @@ export const turfService = {
   },
 
   async searchNearby(lat: number, lng: number, radius: number = 5): Promise<Turf[]> {
-    const response = await api.get('/turfs/search', {
-      params: { lat, lng, radius },
-    });
+    const response = await api.get('/turfs/search', { params: { lat, lng, radius } });
+    return response.data;
+  },
+
+  async getAvailableSlots(turfId: string, date: string): Promise<BookedSlot[]> {
+    const response = await api.get(`/turfs/${turfId}/slots`, { params: { date } });
+    return response.data;
+  },
+
+  async getMyTurfs(): Promise<Turf[]> {
+    const response = await api.get('/turfs/mine');
     return response.data;
   },
 
