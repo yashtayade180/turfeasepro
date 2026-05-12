@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import env from "./env";
 
 export const connectDB = async () => {
+  const maskedUri = env.MONGO_URI?.replace(/:([^@]+)@/, ':***@');
+  console.log("🔍 MONGO_URI (masked):", maskedUri);
   try {
     await mongoose.connect(env.MONGO_URI);
     console.log("✅ MongoDB connected");
