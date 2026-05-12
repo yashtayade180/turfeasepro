@@ -5,7 +5,11 @@ dotenv.config();
 
 const envSchema = Joi.object({
   PORT: Joi.number().default(3000),
-  MONGO_URI: Joi.string().required(),
+  MONGO_URI: Joi.string().optional(),
+  MONGO_USER: Joi.string().optional(),
+  MONGO_PASS: Joi.string().optional(),
+  MONGO_HOST: Joi.string().optional(),
+  MONGO_DB: Joi.string().optional().default("turf_booking"),
   JWT_SECRET: Joi.string().required(),
   RAZORPAY_KEY_ID: Joi.string().optional(),
   RAZORPAY_KEY_SECRET: Joi.string().optional(),
