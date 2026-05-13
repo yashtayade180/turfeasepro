@@ -12,7 +12,6 @@ function buildMongoUri(): string {
 
 export const connectDB = async () => {
   const uri = buildMongoUri();
-  console.log("🔍 Connecting to host:", uri.replace(/:\/\/[^@]+@/, '://***@').split('/')[2]);
   try {
     await mongoose.connect(uri);
     console.log("✅ MongoDB connected");
