@@ -20,6 +20,20 @@ export const splitRoutes = async (app: FastifyInstance) => {
     }
   );
 
+  // Get all splits initiated by the current user
+  app.get(
+    "/my",
+    { preHandler: jwtMiddleware(["user"]) },
+    async (req: any, reply) => {
+      try {
+        const splits = await splitService.getMySplits(req.user.id);
+        reply.send(splits);
+      } catch (err: any) {
+        reply.status(400).send({ message: err.message });
+      }
+    }
+  );
+
   // Get split by ID (public — for shareable page)
   app.get("/:splitId", async (req: any, reply) => {
     try {

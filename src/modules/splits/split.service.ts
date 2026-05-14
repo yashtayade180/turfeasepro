@@ -51,6 +51,15 @@ export class SplitService {
       });
   }
 
+  async getMySplits(userId: string) {
+    return await SplitPayment.find({ initiatedBy: userId })
+      .populate({
+        path: "booking",
+        populate: { path: "turf", select: "name address images" },
+      })
+      .sort({ createdAt: -1 });
+  }
+
   async paySlot(splitId: string, token: string, userId: string, payerName: string) {
     const split = await SplitPayment.findById(splitId);
     if (!split) throw new Error("Split not found");

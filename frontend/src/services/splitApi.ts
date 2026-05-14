@@ -36,6 +36,9 @@ export const splitApi = {
   getByBooking: (bookingId: string) =>
     api.get<SplitPayment>(`/splits/booking/${bookingId}`).then(r => r.data),
 
+  getMySplits: () =>
+    api.get<SplitPayment[]>('/splits/my').then(r => r.data),
+
   paySlot: (splitId: string, token: string, name?: string) =>
     api.post<SplitPayment>(`/splits/${splitId}/pay/${token}`, { name }).then(r => r.data),
 };
