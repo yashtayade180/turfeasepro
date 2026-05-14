@@ -8,6 +8,7 @@ import { reviewRoutes } from "./modules/reviews/review.routes";
 import { userRoutes } from "./modules/users/user.routes";
 import { authController } from "./modules/auth/auth.controller";
 import { adminRoutes } from "./modules/admin/admin.controller";
+import { splitRoutes } from "./modules/splits/split.routes";
 
 const buildApp = () => {
   const app = Fastify({ logger: true });
@@ -25,6 +26,7 @@ const buildApp = () => {
   app.register(reviewRoutes, { prefix: "/api/reviews" });
   app.register(userRoutes, { prefix: "/api/users" });
   app.register(adminRoutes, { prefix: "/api" });
+  app.register(splitRoutes, { prefix: "/api/splits" });
 
   return app;
 };

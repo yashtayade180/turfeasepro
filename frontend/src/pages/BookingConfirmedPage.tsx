@@ -1,13 +1,33 @@
-import React from 'react';
-import { Link, useLocation, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Booking } from '../types';
+import { splitApi } from '../services/splitApi';
 
 const BookingConfirmedPage: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const booking: Booking | undefined = location.state?.booking;
+  const [showSplitModal, setShowSplitModal] = useState(false);
+  const [splitCount, setSplitCount] = useState(2);
+  const [splitting, setSplitting] = useState(false);
+  const [splitError, setSplitError] = useState('');
 
   if (!booking) return <Navigate to="/" replace />;
+
+  const perPerson = Math.ceil(booking.totalPrice / splitCount);
+
+  const handleCreateSplit = async () => {
+    setSplitting(true);
+    setSplitError('');
+    try {
+      const split = await splitApi.create(booking._id, splitCount);
+      navigate(`/split/${split._id}`);
+    } catch (err: any) {
+      setSplitError(err.response?.data?.message || 'Failed to create split');
+      setSplitting(false);
+    }
+  };
 
   const startTime = new Date(booking.startTime);
   const endTime = new Date(booking.endTime);
@@ -116,6 +136,17 @@ const BookingConfirmedPage: React.FC = () => {
             </div>
           </div>
 
+          {/* Split Payment CTA */}
+          <button
+            onClick={() => setShowSplitModal(true)}
+            className="w-full py-3.5 mb-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 hover:from-violet-700 hover:to-purple-700 transition-all shadow-md"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Split with Teammates
+          </button>
+
           <div className="flex gap-3">
             <Link
               to="/dashboard"
@@ -136,6 +167,58 @@ const BookingConfirmedPage: React.FC = () => {
           </p>
         </div>
       </div>
+
+      {/* Split Modal */}
+      {showSplitModal && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 px-4 pb-4 sm:pb-0">
+          <div className="w-full max-w-sm bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-dark-text">Split Payment</h3>
+              <button onClick={() => { setShowSplitModal(false); setSplitError(''); }} className="text-neutral-400 hover:text-neutral-600 dark:hover:text-dark-muted">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <p className="text-sm text-neutral-500 dark:text-dark-muted mb-5">
+              Divide ₹{booking.totalPrice.toLocaleString()} equally among your team.
+            </p>
+
+            <div className="mb-5">
+              <label className="text-sm font-medium text-neutral-700 dark:text-dark-text mb-2 block">
+                Number of players splitting
+              </label>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setSplitCount(c => Math.max(2, c - 1))}
+                  className="w-10 h-10 rounded-full border-2 border-neutral-200 dark:border-dark-border text-neutral-700 dark:text-dark-text font-bold text-lg flex items-center justify-center hover:border-primary-400 hover:text-primary-600 transition-colors"
+                >−</button>
+                <span className="text-2xl font-bold text-neutral-900 dark:text-dark-text w-8 text-center">{splitCount}</span>
+                <button
+                  onClick={() => setSplitCount(c => Math.min(10, c + 1))}
+                  className="w-10 h-10 rounded-full border-2 border-neutral-200 dark:border-dark-border text-neutral-700 dark:text-dark-text font-bold text-lg flex items-center justify-center hover:border-primary-400 hover:text-primary-600 transition-colors"
+                >+</button>
+              </div>
+            </div>
+
+            <div className="bg-violet-50 dark:bg-violet-900/20 rounded-xl p-4 mb-5 flex items-center justify-between">
+              <span className="text-sm text-violet-700 dark:text-violet-300 font-medium">Each person pays</span>
+              <span className="text-2xl font-bold text-violet-700 dark:text-violet-300">₹{perPerson.toLocaleString()}</span>
+            </div>
+
+            {splitError && <p className="text-sm text-red-500 mb-3">{splitError}</p>}
+
+            <button
+              onClick={handleCreateSplit}
+              disabled={splitting}
+              className="w-full py-3 bg-violet-600 text-white text-sm font-semibold rounded-xl hover:bg-violet-700 transition-colors disabled:opacity-60"
+            >
+              {splitting ? 'Creating split...' : 'Create Split & Share Links'}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
