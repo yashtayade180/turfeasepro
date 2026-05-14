@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { bookingService } from '../services/booking.service';
 import { useAuthStore } from '../stores/auth.store';
 import { Booking } from '../types';
 import { format } from 'date-fns';
+import { splitApi } from '../services/splitApi';
 
 type Tab = 'upcoming' | 'past' | 'cancelled';
 
@@ -23,39 +24,68 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
 };
 
 const BookingRow: React.FC<{ booking: Booking; onCancel: (id: string) => void; cancelling: boolean }> = ({ booking, onCancel, cancelling }) => {
+  const navigate = useNavigate();
   const turf = typeof booking.turf === 'object' ? booking.turf : null;
   const start = new Date(booking.startTime);
   const end = new Date(booking.endTime);
   const isUpcoming = booking.status === 'confirmed' && start > new Date();
+  const [splitting, setSplitting] = useState(false);
+
+  const handleSplit = async () => {
+    setSplitting(true);
+    try {
+      const existing = await splitApi.getByBooking(booking._id).catch(() => null);
+      if (existing) { navigate(`/split/${existing._id}`); return; }
+      const split = await splitApi.create(booking._id, 2);
+      navigate(`/split/${split._id}`);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Could not create split');
+      setSplitting(false);
+    }
+  };
 
   return (
-    <div className="flex items-center gap-4 p-4 bg-white dark:bg-dark-surface rounded-xl shadow-card hover:shadow-soft transition-shadow">
-      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
-        {turf?.images?.[0] ? (
-          <img src={turf.images[0]} alt={turf.name} className="w-full h-full object-cover" />
-        ) : (
-          <span className="text-2xl">🏟️</span>
-        )}
+    <div className="p-4 bg-white dark:bg-dark-surface rounded-xl shadow-card hover:shadow-soft transition-shadow">
+      <div className="flex items-center gap-4">
+        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
+          {turf?.images?.[0] ? (
+            <img src={turf.images[0]} alt={turf.name} className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-2xl">🏟️</span>
+          )}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-neutral-900 dark:text-dark-text text-sm truncate">{turf?.name || 'Turf'}</p>
+          <p className="text-xs text-neutral-500 dark:text-dark-muted mt-0.5">
+            {format(start, 'MMM dd, yyyy')} · {format(start, 'HH:mm')} – {format(end, 'HH:mm')}
+          </p>
+          <p className="text-xs font-semibold text-primary-600 mt-0.5">₹{booking.totalPrice.toLocaleString()}</p>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <StatusBadge status={booking.status} />
+          {isUpcoming && (
+            <button
+              onClick={() => onCancel(booking._id)}
+              disabled={cancelling}
+              className="px-3 py-1.5 text-xs font-semibold text-red-600 border border-red-200 dark:border-red-900/50 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="font-semibold text-neutral-900 dark:text-dark-text text-sm truncate">{turf?.name || 'Turf'}</p>
-        <p className="text-xs text-neutral-500 dark:text-dark-muted mt-0.5">
-          {format(start, 'MMM dd, yyyy')} · {format(start, 'HH:mm')} – {format(end, 'HH:mm')}
-        </p>
-        <p className="text-xs font-semibold text-primary-600 mt-0.5">₹{booking.totalPrice.toLocaleString()}</p>
-      </div>
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <StatusBadge status={booking.status} />
-        {isUpcoming && (
-          <button
-            onClick={() => onCancel(booking._id)}
-            disabled={cancelling}
-            className="px-3 py-1.5 text-xs font-semibold text-red-600 border border-red-200 dark:border-red-900/50 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50"
-          >
-            Cancel
-          </button>
-        )}
-      </div>
+      {isUpcoming && (
+        <button
+          onClick={handleSplit}
+          disabled={splitting}
+          className="mt-3 w-full py-2 text-xs font-semibold text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800 rounded-lg flex items-center justify-center gap-1.5 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors disabled:opacity-50"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          {splitting ? 'Loading...' : 'Split with Teammates'}
+        </button>
+      )}
     </div>
   );
 };

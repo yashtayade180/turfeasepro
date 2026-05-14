@@ -38,7 +38,6 @@ export class SplitService {
     return await SplitPayment.findById(splitId)
       .populate({
         path: "booking",
-        select: "startTime endTime totalPrice turf status",
         populate: { path: "turf", select: "name address images" },
       })
       .populate("initiatedBy", "name");
@@ -48,7 +47,6 @@ export class SplitService {
     return await SplitPayment.findOne({ booking: bookingId })
       .populate({
         path: "booking",
-        select: "startTime endTime totalPrice turf status",
         populate: { path: "turf", select: "name address images" },
       });
   }
