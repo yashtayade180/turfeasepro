@@ -31,7 +31,6 @@ const MobileBookingCard: React.FC<{
 }> = ({ booking, onSplit, splitting }) => {
   const turf = typeof booking.turf === 'object' ? booking.turf : null;
   const start = new Date(booking.startTime);
-  const end = new Date(booking.endTime);
   const isUpcoming = booking.status === 'confirmed' && start > new Date();
   const sport = turf?.sports?.[0] || 'Football';
   const image = turf?.images?.[0];
@@ -486,9 +485,9 @@ const DashboardPage: React.FC = () => {
             <p className="text-xs text-neutral-400 dark:text-dark-muted">© 2024 TurfEasePro. Athletic Excellence.</p>
             <div className="flex items-center gap-5">
               {['Terms', 'Privacy', 'Support', 'Partners'].map(link => (
-                <a key={link} href="#" className="text-xs text-neutral-500 dark:text-dark-muted hover:text-primary-600 transition-colors">
+                <span key={link} className="text-xs text-neutral-500 dark:text-dark-muted hover:text-primary-600 transition-colors cursor-pointer">
                   {link}
-                </a>
+                </span>
               ))}
             </div>
           </div>
