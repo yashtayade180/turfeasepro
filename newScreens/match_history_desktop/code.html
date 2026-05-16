@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#141b2b",
+                        "secondary-fixed": "#6ffbbe",
+                        "surface-bright": "#f9f9ff",
+                        "background": "#f9f9ff",
+                        "tertiary-container": "#8e5c00",
+                        "on-primary-container": "#ede0ff",
+                        "primary-fixed": "#eaddff",
+                        "surface-container-high": "#e1e8fd",
+                        "primary": "#630ed4",
+                        "secondary": "#006c49",
+                        "outline-variant": "#ccc3d8",
+                        "surface": "#f9f9ff",
+                        "inverse-primary": "#d2bbff",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-secondary-fixed": "#002113",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#dce2f7",
+                        "outline": "#7b7487",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#d3daef",
+                        "on-secondary-container": "#00714d",
+                        "on-background": "#141b2b",
+                        "primary-fixed-dim": "#d2bbff",
+                        "inverse-on-surface": "#edf0ff",
+                        "surface-tint": "#732ee4",
+                        "on-surface-variant": "#4a4455",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#6cf8bb",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f1f3ff",
+                        "primary-container": "#7c3aed",
+                        "on-tertiary-fixed": "#291800",
+                        "tertiary": "#6e4600",
+                        "surface-container": "#e9edff",
+                        "on-tertiary-container": "#ffe1bd",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "surface-variant": "#dce2f7",
+                        "on-secondary-fixed-variant": "#005236",
+                        "tertiary-fixed": "#ffddb4",
+                        "on-primary-fixed": "#25005a",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#293040",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#633f00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "lg": "24px",
+                        "margin-desktop": "32px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "label-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-md h-14 bg-surface/90 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="sports_soccer">sports_soccer</span>
+<span class="font-display-lg text-headline-md tracking-tight text-primary">TurfEasePro</span>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 px-3 py-2 rounded-xl" href="#">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 px-3 py-2 rounded-xl" href="#">Explore</a>
+<a class="font-label-md text-label-md text-primary bg-secondary-container rounded-xl px-4 py-2" href="#">Bookings</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 px-3 py-2 rounded-xl" href="#">Profile</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary p-2 rounded-full hover:bg-surface-container-low transition-colors" data-icon="notifications">notifications</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-white font-label-md">JD</div>
+</div>
+</header>
+<main class="pt-20 pb-12 px-margin-desktop max-w-[1400px] mx-auto">
+<div class="grid grid-cols-12 gap-lg">
+<!-- Left Sidebar: Stats & History -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-lg">
+<!-- Performance Overview Card -->
+<section class="bg-surface-container-lowest p-lg rounded-3xl border border-outline-variant flex flex-col gap-lg">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Player Performance</h2>
+<div class="flex items-center justify-between bg-surface-container-low p-md rounded-2xl">
+<div class="flex flex-col items-center">
+<span class="font-display-lg text-headline-lg text-primary">47</span>
+<span class="font-label-md text-on-surface-variant">Games</span>
+</div>
+<div class="w-px h-12 bg-outline-variant"></div>
+<div class="flex flex-col items-center">
+<span class="font-display-lg text-headline-lg text-secondary">31</span>
+<span class="font-label-md text-on-surface-variant">Wins</span>
+</div>
+<div class="w-px h-12 bg-outline-variant"></div>
+<div class="flex flex-col items-center">
+<span class="font-display-lg text-headline-lg text-tertiary">10</span>
+<span class="font-label-md text-on-surface-variant">Draws</span>
+</div>
+</div>
+<div class="flex items-center gap-lg py-md">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="123.9" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-md text-headline-md">66%</span>
+<span class="font-label-md text-on-surface-variant">Win Rate</span>
+</div>
+</div>
+<div class="flex-1 space-y-md">
+<div>
+<div class="flex justify-between font-label-lg mb-1">
+<span>Goals / Game</span>
+<span class="text-primary">2.4</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full">
+<div class="bg-primary h-full rounded-full w-[75%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-lg mb-1">
+<span>Clean Sheets</span>
+<span class="text-secondary">12</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full">
+<div class="bg-secondary h-full rounded-full w-[40%]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Match History List -->
+<section class="flex flex-col gap-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Recent Matches</h2>
+<button class="text-primary font-label-lg hover:underline transition-all">View All</button>
+</div>
+<!-- Match Card 1 -->
+<div class="bg-surface-container-lowest p-md rounded-2xl border border-outline-variant hover:shadow-[0px_4px_20px_rgba(0,0,0,0.05)] transition-all cursor-pointer">
+<div class="flex items-center justify-between mb-sm">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-md font-label-md">Victory</span>
+<span class="text-on-surface-variant font-label-md">Oct 12, 2023</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col items-center flex-1">
+<img alt="Team A" class="w-12 h-12 rounded-full mb-2 bg-surface-container" data-alt="A clean, modern flat-design sports logo for a local football club with minimalist shapes and professional typography, isolated on a light gray background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYTLLsnpBPtmNKf-e40irYUsi6iXzcflZLJ1nu3bYpJn7_AXHrR9z8Mp_eSZTvqckpzFYDis5IW4kLq_uRl3yKLvG4PB0upcjjS9IXodpjh4V2xRN7o0-TCsjTJpchTG6oiU-MwaVGiaLw5ukOzQLIU-pl--Lz3FagM5-NC8W5jufbSpbrNTeRu4UOAaEVB59v8IqvbD_7Sbg9op6olnhwxJBJVP8gY1Y33kCdRiqA4XK2A4DnYks7J7XTp1TOyJzI4bwqNE0m4guk"/>
+<span class="font-label-lg text-on-surface">FC Titans</span>
+</div>
+<div class="flex flex-col items-center px-lg">
+<span class="font-display-lg text-headline-md">4 - 2</span>
+<span class="text-on-surface-variant font-label-md">City Turf A</span>
+</div>
+<div class="flex flex-col items-center flex-1">
+<img alt="Team B" class="w-12 h-12 rounded-full mb-2 bg-surface-container" data-alt="A minimalist athletic badge featuring geometric abstract shapes representing speed and movement, utilizing a professional palette of navy blue and soft white for a premium sports aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4KI4j-a_4G_WP5W2Y2_hV-4TFmR0CkkMwRfyb6YdnAYJxY2Ufc7GSlvSYLAjiMNRSXEOnuSmy_eKwC1O5aTewfbg9upaxe6dWDK4YxatCWICZe5vNzV7MUL7qIFmyXedx2dd4jEYzjdbabhWeG8weiolmwc59Sop-rOGB4Uhydpk6gpBsMU_Rj8F14PLx1TYAAx2Gsvu3OLtn01Wtlku8F5DT5xkqkLFh3r_0t9y7FlZPI-w4W39wKQbuUxSmvjT422JViNFhUIgW"/>
+<span class="font-label-lg text-on-surface">Strikers FC</span>
+</div>
+</div>
+</div>
+<!-- Match Card 2 -->
+<div class="bg-surface-container-lowest p-md rounded-2xl border border-outline-variant hover:shadow-[0px_4px_20px_rgba(0,0,0,0.05)] transition-all cursor-pointer">
+<div class="flex items-center justify-between mb-sm">
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-label-md font-label-md">Draw</span>
+<span class="text-on-surface-variant font-label-md">Oct 08, 2023</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col items-center flex-1">
+<img alt="Team A" class="w-12 h-12 rounded-full mb-2 bg-surface-container" data-alt="A modern vector-style football emblem with sharp edges and a minimalist lion symbol, designed in a corporate athletic style using vibrant primary colors on a white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo2FThYw5Ioo8kYaJveArTZPCWHKIA9sxCCN-2kPtrHSghxiUbIsXRMAK6pzK5me80UayeG8EZaFKPvZnC4G311adiu8YIdnCjrutpecY7wzsDKm2gYBu4AcVApBzNWC5heOXXE9h9GoEro2JNeAT5nGyRSsedGEB5ks122iVWh7kvBCwC3yjX0XYwW5XVOWBjpKH5xE2kz0PuSy6mWjcU6LZwG6IWQukXobkzE9DLUPpLjQdlqAdaXsJ7exFYwB1u0G_g42NT2baW"/>
+<span class="font-label-lg text-on-surface">FC Titans</span>
+</div>
+<div class="flex flex-col items-center px-lg">
+<span class="font-display-lg text-headline-md">1 - 1</span>
+<span class="text-on-surface-variant font-label-md">Arena X</span>
+</div>
+<div class="flex flex-col items-center flex-1">
+<img alt="Team B" class="w-12 h-12 rounded-full mb-2 bg-surface-container" data-alt="Professional sports identity logo with clean lines and a modern shield motif, utilizing high-contrast colors like violet and charcoal for a sleek, contemporary tournament look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApPaRqnzE4Nv6JYIjcp5xNCKRh41QAagH7XljYoiwSSkojrxtp1JWD8jMhawbpH809KLUnQXnH3z3sgZiN-GcPloGZ_iS9T2hZvLHFkThhZo-uXcKufdzGqN_yuo5xyQlxaXAcN1D08O-bdWyHarQ55UbJrSdOthZUENffVJbs_LAFNNGkPgBfqYMa1tN5gjvf0D8ZUhLhqLFAhpKXd3RXx5vOtlpSyDN6HC6hstUQE3MdFsNZKe8Hn68Kt6Qs95JxG8pLknP5QC1J"/>
+<span class="font-label-lg text-on-surface">Thunder Utd</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right: Leaderboard Table -->
+<div class="col-span-12 lg:col-span-7">
+<section class="bg-surface-container-lowest rounded-3xl border border-outline-variant overflow-hidden">
+<div class="p-lg border-b border-outline-variant flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Seasonal Leaderboard</h2>
+<p class="font-body-sm text-on-surface-variant">Top performers at TurfEasePro</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container-low px-4 py-2 rounded-xl text-label-md font-label-md hover:bg-surface-container-high transition-all">Monthly</button>
+<button class="bg-primary text-white px-4 py-2 rounded-xl text-label-md font-label-md">All Time</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-lg py-md font-label-lg text-on-surface-variant">Rank</th>
+<th class="px-lg py-md font-label-lg text-on-surface-variant">Player</th>
+<th class="px-lg py-md font-label-lg text-on-surface-variant">Games</th>
+<th class="px-lg py-md font-label-lg text-on-surface-variant">Wins</th>
+<th class="px-lg py-md font-label-lg text-on-surface-variant">Goals</th>
+<th class="px-lg py-md font-label-lg text-on-surface-variant">Rating</th>
+</tr>
+</thead>
+<tbody>
+<!-- Rank 1 -->
+<tr class="border-b border-outline-variant bg-tertiary-fixed/10 hover:bg-tertiary-fixed/20 transition-all cursor-pointer">
+<td class="px-lg py-lg">
+<div class="w-10 h-10 bg-tertiary text-on-tertiary-container rounded-full flex items-center justify-center font-bold">1</div>
+</td>
+<td class="px-lg py-lg">
+<div class="flex items-center gap-md">
+<img alt="Player" class="w-10 h-10 rounded-full border-2 border-tertiary" data-alt="A professional studio portrait of a young athlete, looking confident and smiling, with soft three-point lighting that highlights skin texture, set against a clean studio background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfMxIVUMRdMfIaRTblthbQPvFA0cSPI58NugzRm3zeBl6QbFr-iktmXgun_9Uksq8EUDPfg0nyuOEXsoM_MjbHKVWqCilfCvwuZZDRgcHR7JdMQReLCYnQiZbxZYb3RSSvkJUAT8zvd-gEgr1UTQs2TnISBMZVKSEUJn8W8fQmtzr1IFZYFvjFeIcZyITPAE4QHGtLjIyewuJn0UVMjpDrFG7mduxs-C5O28DdQ3A1b0WHtp7bIrOALR1-Bx3WSFCOE_mcS3b1ERPK"/>
+<div class="flex flex-col">
+<span class="font-label-lg text-on-surface">Marco Castille</span>
+<span class="text-xs text-tertiary font-bold">LEGENDARY</span>
+</div>
+</div>
+</td>
+<td class="px-lg py-lg font-body-md">156</td>
+<td class="px-lg py-lg font-body-md">112</td>
+<td class="px-lg py-lg font-body-md">245</td>
+<td class="px-lg py-lg">
+<span class="text-tertiary font-bold">9.8</span>
+</td>
+</tr>
+<!-- Rank 2 -->
+<tr class="border-b border-outline-variant bg-surface-container-highest/30 hover:bg-surface-container-highest/50 transition-all cursor-pointer">
+<td class="px-lg py-lg">
+<div class="w-10 h-10 bg-outline text-white rounded-full flex items-center justify-center font-bold">2</div>
+</td>
+<td class="px-lg py-lg">
+<div class="flex items-center gap-md">
+<img alt="Player" class="w-10 h-10 rounded-full border-2 border-outline" data-alt="High-quality lifestyle headshot of a female soccer player in modern athletic gear, captured in natural bright outdoor lighting on a grassy field with a shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT1QMLusb9v8R7tuYpoK_5aFz7QrWcYi9d7PIL-XHuG4w_cjdR034iR0s9ZglsFjC9cUWRaI1x1J8qnL7ePialRKYcFVlm2qq9t1wHFsFCOneG9VQVRGdMn2BU95X4L8w6X7l7jNXywglJI9d0-oqmOGuBbKwzq44aAdSV7qVHuIqcOIx3MWJr0lD4UtWwT_lHQEA9NPi139463p-M7nGGDWiUmsAMZ4rPQ96G44R3RTYS9-3x-UidoQgrOskjBJUhN_UxoL6DrPT2"/>
+<div class="flex flex-col">
+<span class="font-label-lg text-on-surface">Sarah Lopez</span>
+<span class="text-xs text-outline font-bold">ELITE</span>
+</div>
+</div>
+</td>
+<td class="px-lg py-lg font-body-md">142</td>
+<td class="px-lg py-lg font-body-md">98</td>
+<td class="px-lg py-lg font-body-md">182</td>
+<td class="px-lg py-lg">
+<span class="font-bold">9.4</span>
+</td>
+</tr>
+<!-- Rank 3 -->
+<tr class="border-b border-outline-variant bg-tertiary-container/10 hover:bg-tertiary-container/20 transition-all cursor-pointer">
+<td class="px-lg py-lg">
+<div class="w-10 h-10 bg-tertiary-container text-white rounded-full flex items-center justify-center font-bold">3</div>
+</td>
+<td class="px-lg py-lg">
+<div class="flex items-center gap-md">
+<img alt="Player" class="w-10 h-10 rounded-full border-2 border-tertiary-container" data-alt="Portrait of a male football player wearing a clean white jersey, soft shadows across the face for depth, cinematic lighting in a modern sports facility setting, premium photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeH6dqf3pIXPGb7ih8hJHDPKuTMOnziM8zBjPc1wiOnMpoZppvIHrthF1WRP9t2qjnNlGVxY-hm4tFDkLSkU6ClsKuAf5OlOdRHMhFlBGIJzbbHGwy3j261qrvj4w2DXLu9b5cvkdtYAsrGm726KKCymVhynXjEXNRp04LYHvYz8Gd-eLv7J6zjZIdBlCMDtSlOsihTfsAMzFE7oAK1Q-oZMDZiGN1AqkGjBcYP9PnMAA4rtsfUnldnWg5_WRhCBv-UpY9Ul04v3jV"/>
+<div class="flex flex-col">
+<span class="font-label-lg text-on-surface">John Doe</span>
+<span class="text-xs text-tertiary-container font-bold">PRO</span>
+</div>
+</div>
+</td>
+<td class="px-lg py-lg font-body-md">120</td>
+<td class="px-lg py-lg font-body-md">81</td>
+<td class="px-lg py-lg font-body-md">154</td>
+<td class="px-lg py-lg">
+<span class="font-bold">9.1</span>
+</td>
+</tr>
+<!-- Regular Rank 4 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-all cursor-pointer">
+<td class="px-lg py-lg">
+<div class="w-10 h-10 flex items-center justify-center font-label-lg text-on-surface-variant">4</div>
+</td>
+<td class="px-lg py-lg">
+<div class="flex items-center gap-md">
+<img alt="Player" class="w-10 h-10 rounded-full" data-alt="A sharp, detailed portrait of an athletic woman in gym attire, bright high-key lighting, focused expression, set against a minimalist architectural background with clean lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1BidC5490j9i5iaxHcs35I5UvodKdP-Jg3EcFAbTzjYzHasBNI6MdAITuU14jhcWKE3EP4J2SAxywNqVMAdB9PjCSK63K92oulk59PdovZQm_FgXo-swGikaC48ue215Nk6DJW94edx1iQ3aFHtfy8_MXWjXts7Hemr8WkcwePmfE0AzGV_NdtR1ExPIdXE5yzE1AfiLW5opdFSrZO2g5QiDxMOEZsPsHdhPa0hI5_sDhkd39Tm54erZ5cg5rwsAj5Rd73uP5wpbs"/>
+<div class="flex flex-col">
+<span class="font-label-lg text-on-surface">Amina Khan</span>
+<span class="text-xs text-on-surface-variant">Rising Star</span>
+</div>
+</div>
+</td>
+<td class="px-lg py-lg font-body-md">98</td>
+<td class="px-lg py-lg font-body-md">62</td>
+<td class="px-lg py-lg font-body-md">112</td>
+<td class="px-lg py-lg font-body-md">8.7</td>
+</tr>
+<!-- Regular Rank 5 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-all cursor-pointer">
+<td class="px-lg py-lg">
+<div class="w-10 h-10 flex items-center justify-center font-label-lg text-on-surface-variant">5</div>
+</td>
+<td class="px-lg py-lg">
+<div class="flex items-center gap-md">
+<img alt="Player" class="w-10 h-10 rounded-full" data-alt="Close-up headshot of a focused male athlete with a blurred outdoor stadium background, crisp focus on the subject, vibrant athletic colors, professional sports media style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR8IrtiV_A-mXTdUS7VKo7J245dKdYHqbTmMe_clkE6pOqjhM5BkgXmWo2Ct0FxoeTCdbKV4pnf05mV_ey6Zm4kFIDBtmXHNO-GSeRTB1-vaZkeQYjsv0oajC-jZI9phHxFp7_Z-v6gUNsXJkX-CQjfop6udIO84ZLwLkmKE8x-4Xwi8t6Ys7WMzoWvss-ixjBJkrbObdpQXlTF3VIsyktkQ1j55NeRniSOeRMUEaAVQKsx2xmkVjRdlVTBNjYLKW1CfEQsN1eB7I9"/>
+<div class="flex flex-col">
+<span class="font-label-lg text-on-surface">Ben Victor</span>
+<span class="text-xs text-on-surface-variant">Veteran</span>
+</div>
+</div>
+</td>
+<td class="px-lg py-lg font-body-md">115</td>
+<td class="px-lg py-lg font-body-md">59</td>
+<td class="px-lg py-lg font-body-md">94</td>
+<td class="px-lg py-lg font-body-md">8.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Seasonal Trends (Bento Style Extension) -->
+<div class="grid grid-cols-2 gap-md mt-lg">
+<div class="bg-primary p-lg rounded-3xl text-white">
+<span class="material-symbols-outlined text-display-lg" data-icon="trending_up">trending_up</span>
+<h3 class="font-headline-sm mt-md">Hot Streak</h3>
+<p class="font-body-sm opacity-90">Won last 5 matches in a row. Keep it up!</p>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-3xl border border-outline-variant">
+<span class="material-symbols-outlined text-display-lg text-secondary" data-icon="emoji_events">emoji_events</span>
+<h3 class="font-headline-sm mt-md text-on-surface">MVP Status</h3>
+<p class="font-body-sm text-on-surface-variant">Voted player of the match 12 times this month.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation (Hidden on Desktop) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-md pb-safe pt-2 bg-surface/95 backdrop-blur-lg border-t border-outline-variant shadow-[0px_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-label-md font-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="text-label-md font-label-md">Explore</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-md font-label-md">Bookings</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-label-md font-label-md">Profile</span>
+</button>
+</nav>
+</body></html>

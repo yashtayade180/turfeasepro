@@ -16,6 +16,9 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import PartnerDashboardPage from './pages/PartnerDashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import SplitPaymentPage from './pages/SplitPaymentPage';
+import MatchHistoryPage from './pages/MatchHistoryPage';
+import LogMatchPage from './pages/LogMatchPage';
+import AddProfessionalPage from './pages/AddProfessionalPage';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
@@ -54,6 +57,9 @@ function App() {
             <Route path="/admin" element={<ProtectedRoute roles={['admin']}><AdminDashboardPage /></ProtectedRoute>} />
             <Route path="/partner" element={<ProtectedRoute roles={['partner']}><PartnerDashboardPage /></ProtectedRoute>} />
             <Route path="/split/:splitId" element={<SplitPaymentPage />} />
+            <Route path="/matches" element={<ProtectedRoute roles={['user']}><MatchHistoryPage /></ProtectedRoute>} />
+            <Route path="/matches/log/:bookingId" element={<ProtectedRoute roles={['user']}><LogMatchPage /></ProtectedRoute>} />
+            <Route path="/officials/add/:bookingId" element={<ProtectedRoute roles={['user']}><AddProfessionalPage /></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

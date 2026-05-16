@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#141b2b",
+                        "secondary-fixed": "#6ffbbe",
+                        "surface-bright": "#f9f9ff",
+                        "background": "#f9f9ff",
+                        "tertiary-container": "#8e5c00",
+                        "on-primary-container": "#ede0ff",
+                        "primary-fixed": "#eaddff",
+                        "surface-container-high": "#e1e8fd",
+                        "primary": "#630ed4",
+                        "secondary": "#006c49",
+                        "outline-variant": "#ccc3d8",
+                        "surface": "#f9f9ff",
+                        "inverse-primary": "#d2bbff",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-secondary-fixed": "#002113",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#dce2f7",
+                        "outline": "#7b7487",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#d3daef",
+                        "on-secondary-container": "#00714d",
+                        "on-background": "#141b2b",
+                        "primary-fixed-dim": "#d2bbff",
+                        "inverse-on-surface": "#edf0ff",
+                        "surface-tint": "#732ee4",
+                        "on-surface-variant": "#4a4455",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#6cf8bb",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f1f3ff",
+                        "primary-container": "#7c3aed",
+                        "on-tertiary-fixed": "#291800",
+                        "tertiary": "#6e4600",
+                        "surface-container": "#e9edff",
+                        "on-tertiary-container": "#ffe1bd",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "surface-variant": "#dce2f7",
+                        "on-secondary-fixed-variant": "#005236",
+                        "tertiary-fixed": "#ffddb4",
+                        "on-primary-fixed": "#25005a",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#293040",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#633f00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "lg": "24px",
+                        "margin-desktop": "32px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "label-lg": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+<!-- Top App Bar (Shared Component) -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-md h-14 bg-surface/90 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="sports_soccer">sports_soccer</span>
+<h1 class="font-display-lg text-headline-md tracking-tight text-primary">TurfEasePro</h1>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full cursor-pointer" data-icon="notifications">notifications</span>
+</div>
+</header>
+<!-- Main Content -->
+<main class="mt-20 px-margin-mobile">
+<!-- Header Section -->
+<div class="mb-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Add a Professional</h2>
+<p class="font-body-md text-on-surface-variant">Enhance your game</p>
+</div>
+<!-- Selection Progress Bar (Style Guidance Reference) -->
+<div class="w-full bg-surface-container-high h-1 rounded-full mb-xl overflow-hidden">
+<div class="bg-primary w-2/3 h-full"></div>
+</div>
+<!-- 2-Col Grid of Professional Cards -->
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Card 1: Selected State -->
+<div class="bg-surface border-2 border-primary-container rounded-2xl p-sm flex flex-col items-center text-center shadow-[0px_4px_20px_rgba(0,0,0,0.05)] relative overflow-hidden">
+<div class="absolute top-2 right-2 bg-primary text-on-primary text-[10px] px-2 py-0.5 rounded-full font-label-md">PRO</div>
+<div class="w-16 h-16 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-headline-md mb-sm mt-md">
+                    AS
+                </div>
+<h3 class="font-label-lg text-on-surface truncate w-full">Arjun Sharma</h3>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-label-md bg-secondary-container text-on-secondary-container mb-xs uppercase tracking-wider">Referee</span>
+<div class="flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-[14px] text-tertiary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-on-surface-variant">4.9</span>
+</div>
+<div class="flex flex-wrap justify-center gap-xs mb-md">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] rounded-lg">Soccer</span>
+</div>
+<div class="mt-auto w-full">
+<p class="font-label-lg text-primary mb-sm">₹500/hr</p>
+<button class="w-full h-10 bg-primary-container text-on-primary rounded-xl font-label-md active:scale-95 transition-transform duration-150 flex items-center justify-center gap-xs">
+                        Added <span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Default State -->
+<div class="bg-surface border border-outline-variant rounded-2xl p-sm flex flex-col items-center text-center hover:bg-surface-container-low transition-colors duration-200">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-headline-md mb-sm mt-md">
+                    RM
+                </div>
+<h3 class="font-label-lg text-on-surface truncate w-full">Rohan Mehta</h3>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-label-md bg-tertiary-fixed text-on-tertiary-fixed-variant mb-xs uppercase tracking-wider">Coach</span>
+<div class="flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-[14px] text-tertiary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-on-surface-variant">4.7</span>
+</div>
+<div class="flex flex-wrap justify-center gap-xs mb-md">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] rounded-lg">Cricket</span>
+</div>
+<div class="mt-auto w-full">
+<p class="font-label-lg text-on-surface-variant mb-sm">₹800/hr</p>
+<button class="w-full h-10 border border-primary-container text-primary rounded-xl font-label-md active:scale-95 transition-transform duration-150">
+                        Add
+                    </button>
+</div>
+</div>
+<!-- Card 3: Default State -->
+<div class="bg-surface border border-outline-variant rounded-2xl p-sm flex flex-col items-center text-center hover:bg-surface-container-low transition-colors duration-200">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-headline-md mb-sm mt-md">
+                    PK
+                </div>
+<h3 class="font-label-lg text-on-surface truncate w-full">Priya Kaur</h3>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-label-md bg-secondary-container text-on-secondary-container mb-xs uppercase tracking-wider">Referee</span>
+<div class="flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-[14px] text-tertiary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-on-surface-variant">5.0</span>
+</div>
+<div class="flex flex-wrap justify-center gap-xs mb-md">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] rounded-lg">Tennis</span>
+</div>
+<div class="mt-auto w-full">
+<p class="font-label-lg text-on-surface-variant mb-sm">₹600/hr</p>
+<button class="w-full h-10 border border-primary-container text-primary rounded-xl font-label-md active:scale-95 transition-transform duration-150">
+                        Add
+                    </button>
+</div>
+</div>
+<!-- Card 4: Default State -->
+<div class="bg-surface border border-outline-variant rounded-2xl p-sm flex flex-col items-center text-center hover:bg-surface-container-low transition-colors duration-200">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-headline-md mb-sm mt-md">
+                    DS
+                </div>
+<h3 class="font-label-lg text-on-surface truncate w-full">Dev Singh</h3>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-label-md bg-tertiary-fixed text-on-tertiary-fixed-variant mb-xs uppercase tracking-wider">Coach</span>
+<div class="flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-[14px] text-tertiary-container" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-on-surface-variant">4.8</span>
+</div>
+<div class="flex flex-wrap justify-center gap-xs mb-md">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] rounded-lg">Soccer</span>
+</div>
+<div class="mt-auto w-full">
+<p class="font-label-lg text-on-surface-variant mb-sm">₹750/hr</p>
+<button class="w-full h-10 border border-primary-container text-primary rounded-xl font-label-md active:scale-95 transition-transform duration-150">
+                        Add
+                    </button>
+</div>
+</div>
+</div>
+<!-- Secondary Action -->
+<div class="mt-xl text-center pb-12">
+<a class="font-label-lg text-primary-container hover:underline decoration-primary-container/30 underline-offset-4" href="#">Continue without official</a>
+</div>
+</main>
+<!-- Bottom Nav Bar (Shared Component - Hidden as this is a transactional selection screen per prompt guidance "suppress the navigation") -->
+<!-- BUT requested to use Shared Component logic. Given Screen 3 is a sub-step of booking, navigation shell is suppressed to prioritize focus. -->
+<!-- Footer CTA (Simulating mobile flow button) -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-xl p-margin-mobile border-t border-outline-variant flex flex-col gap-sm z-40">
+<button class="w-full h-14 bg-primary text-on-primary rounded-2xl font-label-lg shadow-lg active:scale-95 transition-transform duration-150">
+            Confirm Selection
+        </button>
+</div>
+</body></html>

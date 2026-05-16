@@ -7,6 +7,7 @@ import { useAuthStore } from '../stores/auth.store';
 import { Booking } from '../types';
 import { format, isToday, isTomorrow } from 'date-fns';
 import { splitApi, SplitPayment } from '../services/splitApi';
+import { weatherApi, WeatherForecast } from '../services/weatherApi';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -300,9 +301,27 @@ const DashboardPage: React.FC = () => {
     queryFn: splitApi.getMySplits,
   });
 
+  const [weatherDismissed, setWeatherDismissed] = useState(false);
+
   const now = new Date();
   const upcoming = bookings.filter(b => b.status === 'confirmed' && new Date(b.startTime) > now);
   const cancelled = bookings.filter(b => b.status === 'cancelled');
+
+  // Fetch weather for the first upcoming booking
+  const firstUpcoming = upcoming[0];
+  const firstTurf = firstUpcoming && typeof firstUpcoming.turf === 'object' ? firstUpcoming.turf : null;
+  const firstLat = firstTurf?.location?.coordinates?.[1];
+  const firstLng = firstTurf?.location?.coordinates?.[0];
+  const firstDate = firstUpcoming ? format(new Date(firstUpcoming.startTime), 'yyyy-MM-dd') : null;
+
+  const { data: upcomingWeather } = useQuery<WeatherForecast>({
+    queryKey: ['weather-dashboard', firstLat, firstLng, firstDate],
+    queryFn: () => weatherApi.getForecast(firstLat!, firstLng!, firstDate!),
+    enabled: !!(firstLat && firstLng && firstDate),
+    staleTime: 1000 * 60 * 30,
+  });
+
+  const showWeatherAlert = !weatherDismissed && upcomingWeather?.rainRisk && firstUpcoming;
 
   const pendingSplitAmount = mySplits.reduce((sum, s) => {
     if (s.status === 'complete') return sum;
@@ -333,64 +352,116 @@ const DashboardPage: React.FC = () => {
         {/* Greeting */}
         <div className="mb-5">
           <h1 className="text-2xl font-bold text-neutral-900 dark:text-dark-text">
-            Hi, {user?.name?.split(' ')[0]}! 👋
+            Hello, {user?.name?.split(' ')[0]}! 👋
           </h1>
-          <p className="text-sm text-neutral-500 dark:text-dark-muted mt-0.5">Ready for your game today?</p>
-        </div>
-
-        {/* Stats — 2-tile row */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <div className="bg-white dark:bg-dark-surface rounded-2xl p-4 shadow-card">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-neutral-500 dark:text-dark-muted font-medium">Total Bookings</p>
-              <svg className="w-4 h-4 text-neutral-300 dark:text-dark-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <p className="text-3xl font-bold text-neutral-900 dark:text-dark-text">{bookings.length}</p>
-          </div>
-
-          <div className="bg-violet-600 rounded-2xl p-4 shadow-card">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-violet-200 font-medium">Pending Split</p>
-              <svg className="w-4 h-4 text-violet-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <p className="text-2xl font-bold text-white">
-              {pendingSplitAmount > 0 ? `₹${pendingSplitAmount.toLocaleString()}` : '—'}
-            </p>
-          </div>
+          <p className="text-sm text-neutral-500 dark:text-dark-muted mt-0.5">Ready for your next match?</p>
         </div>
 
         {/* Upcoming Games header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3">
           <h2 className="text-base font-bold text-neutral-900 dark:text-dark-text">Upcoming Games</h2>
           <Link to="/turfs" className="text-xs text-violet-600 font-semibold">View All</Link>
         </div>
 
+        {/* Weather Alert Banner */}
+        {showWeatherAlert && firstUpcoming && firstTurf && (
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4 mb-4 flex items-start gap-3">
+            <span className="text-2xl flex-shrink-0">🌧️</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-amber-800 dark:text-amber-300">Rain Alert for Tomorrow</p>
+              <p className="text-xs text-amber-700 dark:text-amber-400 mt-0.5">
+                {firstTurf.name} · {format(new Date(firstUpcoming.startTime), 'HH:mm')} has {upcomingWeather?.precipitationProbability}% rain chance.
+              </p>
+              <button className="text-xs text-violet-600 font-bold mt-1.5 flex items-center gap-1">
+                Reschedule Free →
+              </button>
+            </div>
+            <button onClick={() => setWeatherDismissed(true)} className="text-amber-400 hover:text-amber-600 transition-colors flex-shrink-0">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
+
         {isLoading ? (
-          <div className="space-y-4">
-            {[1, 2].map(i => <div key={i} className="h-64 bg-white dark:bg-dark-surface rounded-2xl animate-pulse shadow-card" />)}
+          <div className="space-y-3">
+            {[1, 2].map(i => <div key={i} className="h-32 bg-white dark:bg-dark-surface rounded-2xl animate-pulse shadow-card" />)}
           </div>
         ) : upcoming.length > 0 ? (
-          <div className="space-y-4">
-            {upcoming.map(b => (
-              <MobileBookingCard key={b._id} booking={b} onSplit={handleSplit} splitting={splitting} />
-            ))}
+          <div className="space-y-3 mb-5">
+            {upcoming.slice(0, 3).map(b => {
+              const turf = typeof b.turf === 'object' ? b.turf : null;
+              const start = new Date(b.startTime);
+              const end = new Date(b.endTime);
+              return (
+                <div key={b._id} className="bg-white dark:bg-dark-surface rounded-2xl p-4 shadow-card">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1 min-w-0">
+                      <span className="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold rounded-full mb-2">Confirmed</span>
+                      <p className="font-bold text-neutral-900 dark:text-dark-text text-sm truncate">{turf?.name}</p>
+                      <div className="flex items-center gap-1 text-xs text-neutral-500 dark:text-dark-muted mt-0.5">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        {dayLabel(start)}, {format(start, 'HH:mm')} – {format(end, 'HH:mm')}
+                      </div>
+                    </div>
+                    {turf?.images?.[0] && (
+                      <img src={turf.images[0]} alt={turf.name} className="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center gap-1">
+                      {[...Array(Math.min(3, 3))].map((_, i) => (
+                        <div key={i} className="w-7 h-7 rounded-full bg-violet-600 border-2 border-white dark:border-dark-surface flex items-center justify-center text-white text-[10px] font-bold -ml-1 first:ml-0">P{i+1}</div>
+                      ))}
+                      <span className="text-xs text-neutral-500 dark:text-dark-muted ml-1">+8</span>
+                    </div>
+                    <button
+                      onClick={() => handleSplit(b)}
+                      disabled={splitting === b._id}
+                      className="px-4 py-2 bg-violet-600 text-white text-xs font-bold rounded-xl hover:bg-violet-700 transition-colors disabled:opacity-50"
+                    >
+                      {splitting === b._id ? '...' : 'Manage Game'}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ) : (
-          <div className="text-center py-14 bg-white dark:bg-dark-surface rounded-2xl shadow-card">
+          <div className="text-center py-12 bg-white dark:bg-dark-surface rounded-2xl shadow-card mb-5">
             <div className="text-5xl mb-3">📅</div>
             <p className="text-sm font-medium text-neutral-500 dark:text-dark-muted">No upcoming games</p>
-            <Link
-              to="/turfs"
-              className="mt-4 inline-block px-5 py-2.5 bg-violet-600 text-white text-sm font-semibold rounded-xl hover:bg-violet-700 transition-colors"
-            >
+            <Link to="/turfs" className="mt-4 inline-block px-5 py-2.5 bg-violet-600 text-white text-sm font-semibold rounded-xl hover:bg-violet-700 transition-colors">
               Find a Turf
             </Link>
           </div>
         )}
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 gap-3">
+          <Link to="/turfs" className="bg-white dark:bg-dark-surface rounded-2xl p-4 shadow-card flex flex-col items-center gap-2 hover:shadow-soft transition-shadow">
+            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <span className="text-sm font-semibold text-neutral-700 dark:text-dark-text">Book New</span>
+          </Link>
+          <Link
+            to={mySplits.length > 0 ? `/split/${mySplits[0]._id}` : '/dashboard'}
+            className="bg-white dark:bg-dark-surface rounded-2xl p-4 shadow-card flex flex-col items-center gap-2 hover:shadow-soft transition-shadow"
+          >
+            <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <span className="text-sm font-semibold text-neutral-700 dark:text-dark-text">Split Pay</span>
+          </Link>
+        </div>
       </div>
 
       {/* ── DESKTOP ─────────────────────────────────────────────────────────── */}

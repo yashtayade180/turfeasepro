@@ -26,12 +26,8 @@ export class WeatherService {
       params: {
         latitude: lat,
         longitude: lng,
-        daily: [
-          "weathercode",
-          "precipitation_probability_max",
-          "temperature_2m_max",
-          "temperature_2m_min",
-        ].join(","),
+        daily: ["weathercode", "precipitation_probability_max", "temperature_2m_max", "temperature_2m_min"].join(","),
+        hourly: ["precipitation_probability", "weathercode"].join(","),
         timezone: "auto",
         start_date: date,
         end_date: date,
@@ -43,6 +39,16 @@ export class WeatherService {
     const tempMax: number = data.daily.temperature_2m_max[0];
     const tempMin: number = data.daily.temperature_2m_min[0];
 
+    const hourlyPrecip: number[] = data.hourly?.precipitation_probability ?? [];
+    const hourlyCodes: number[] = data.hourly?.weathercode ?? [];
+
+    const hourly = Array.from({ length: 16 }, (_, i) => {
+      const hour = i + 6;
+      const precip = hourlyPrecip[hour] ?? precipProb;
+      const wcode = hourlyCodes[hour] ?? code;
+      return { hour, precipitationProbability: precip, weatherCode: wcode, description: weatherDescription(wcode), rainRisk: isRainRisk(wcode, precip) };
+    });
+
     return {
       date,
       weatherCode: code,
@@ -51,10 +57,8 @@ export class WeatherService {
       tempMax,
       tempMin,
       rainRisk: isRainRisk(code, precipProb),
-      alert:
-        isRainRisk(code, precipProb)
-          ? `Rain likely (${precipProb}% chance). Consider rescheduling.`
-          : null,
+      alert: isRainRisk(code, precipProb) ? `Rain likely (${precipProb}% chance). Consider rescheduling.` : null,
+      hourly,
     };
   }
 }

@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { turfService } from '../services/turf.service';
 import { bookingService } from '../services/booking.service';
 import { reviewService } from '../services/review.service';
+import { weatherApi, HourlyWeather } from '../services/weatherApi';
 import { useAuthStore } from '../stores/auth.store';
 import { format, addDays, startOfDay } from 'date-fns';
 
@@ -54,6 +55,25 @@ const TurfDetailPage: React.FC = () => {
 
   const { data: turf, isLoading } = useQuery({ queryKey: ['turf', id], queryFn: () => turfService.getTurfById(id!), enabled: !!id });
   const { data: bookedSlots = [] } = useQuery({ queryKey: ['slots', id, dateStr], queryFn: () => turfService.getAvailableSlots(id!, dateStr), enabled: !!id });
+
+  const lat = turf?.location?.coordinates?.[1];
+  const lng = turf?.location?.coordinates?.[0];
+  const { data: weather } = useQuery({
+    queryKey: ['weather', lat, lng, dateStr],
+    queryFn: () => weatherApi.getForecast(lat!, lng!, dateStr),
+    enabled: !!(lat && lng),
+    staleTime: 1000 * 60 * 30,
+  });
+
+  const getSlotWeather = (hour: number): HourlyWeather | null =>
+    weather?.hourly?.find(h => h.hour === hour) ?? null;
+
+  const weatherBadge = (hw: HourlyWeather | null) => {
+    if (!hw) return null;
+    if (hw.rainRisk && hw.weatherCode >= 80) return { icon: '⛈️', label: hw.description, cls: 'bg-red-100 text-red-600' };
+    if (hw.rainRisk) return { icon: '🌧️', label: `Rain ${hw.precipitationProbability}%`, cls: 'bg-amber-100 text-amber-700' };
+    return { icon: '☀️', label: `${weather?.tempMax?.toFixed(0)}°C`, cls: 'bg-green-100 text-green-700' };
+  };
   const { data: reviews = [] } = useQuery({ queryKey: ['reviews', id], queryFn: () => reviewService.getTurfReviews(id!), enabled: !!id });
 
   const bookingMutation = useMutation({
@@ -277,26 +297,50 @@ const TurfDetailPage: React.FC = () => {
 
               {/* Time Slots */}
               <div className="mb-4">
-                <label className="block text-xs font-semibold text-neutral-600 dark:text-dark-muted mb-2 uppercase tracking-wide">Available Slots</label>
-                <div className="grid grid-cols-3 gap-1.5">
+                <label className="block text-xs font-semibold text-neutral-600 dark:text-dark-muted mb-2 uppercase tracking-wide">Select Time Slot</label>
+                <div className="space-y-2">
                   {HOUR_SLOTS.map(hour => {
                     const booked = isSlotBooked(hour, bookedSlots);
                     const selected = selectedSlots.includes(hour);
+                    const hw = getSlotWeather(hour);
+                    const badge = weatherBadge(hw);
                     return (
-                      <button
-                        key={hour}
-                        onClick={() => toggleSlot(hour)}
-                        disabled={booked}
-                        className={`py-1.5 rounded-lg text-xs font-medium transition-all ${
-                          booked
-                            ? 'bg-neutral-100 dark:bg-dark-elevated text-neutral-300 dark:text-neutral-700 cursor-not-allowed line-through'
-                            : selected
-                            ? 'bg-accent-500 text-white shadow-sm'
-                            : 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/50 border border-primary-100 dark:border-primary-900/50'
-                        }`}
-                      >
-                        {formatHour(hour)}
-                      </button>
+                      <div key={hour}>
+                        <button
+                          onClick={() => toggleSlot(hour)}
+                          disabled={booked}
+                          className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                            booked
+                              ? 'bg-neutral-100 dark:bg-dark-elevated text-neutral-300 dark:text-neutral-700 cursor-not-allowed'
+                              : selected
+                              ? 'bg-violet-50 dark:bg-violet-900/20 border-2 border-violet-600 text-violet-700 dark:text-violet-300'
+                              : 'bg-neutral-50 dark:bg-dark-elevated text-neutral-700 dark:text-dark-text hover:bg-neutral-100 dark:hover:bg-dark-border border border-neutral-200 dark:border-dark-border'
+                          }`}
+                        >
+                          <div className="flex flex-col items-start">
+                            <span className="font-semibold">{formatHour(hour)} – {formatHour(hour + 1)}</span>
+                            {!booked && <span className="text-neutral-400 dark:text-dark-muted text-[10px]">Available</span>}
+                            {booked && <span className="text-[10px]">Fully Booked</span>}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {badge && !booked && (
+                              <span className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${badge.cls}`}>
+                                {badge.icon} {badge.label}
+                              </span>
+                            )}
+                            {turf && <span className="font-bold text-primary-600">₹{turf.pricePerHour}</span>}
+                          </div>
+                        </button>
+                        {/* Weather advisory below rain-risk selected slot */}
+                        {selected && hw?.rainRisk && (
+                          <div className="mt-1 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl flex items-start gap-2">
+                            <span className="text-lg leading-none">🌧️</span>
+                            <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+                              <strong>Weather Advisory:</strong> Heavy rain expected. Reschedule free within 6h of your game if it rains nonstop.
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     );
                   })}
                 </div>

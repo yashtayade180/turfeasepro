@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TurfEasePro Dashboard - Weather Alert</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-tertiary": "#ffffff",
+                  "on-surface": "#141b2b",
+                  "secondary-fixed": "#6ffbbe",
+                  "surface-bright": "#f9f9ff",
+                  "background": "#f9f9ff",
+                  "tertiary-container": "#8e5c00",
+                  "on-primary-container": "#ede0ff",
+                  "primary-fixed": "#eaddff",
+                  "surface-container-high": "#e1e8fd",
+                  "primary": "#630ed4",
+                  "secondary": "#006c49",
+                  "outline-variant": "#ccc3d8",
+                  "surface": "#f9f9ff",
+                  "inverse-primary": "#d2bbff",
+                  "secondary-fixed-dim": "#4edea3",
+                  "on-secondary-fixed": "#002113",
+                  "on-error": "#ffffff",
+                  "surface-container-highest": "#dce2f7",
+                  "outline": "#7b7487",
+                  "on-secondary": "#ffffff",
+                  "surface-dim": "#d3daef",
+                  "on-secondary-container": "#00714d",
+                  "on-background": "#141b2b",
+                  "primary-fixed-dim": "#d2bbff",
+                  "inverse-on-surface": "#edf0ff",
+                  "surface-tint": "#732ee4",
+                  "on-surface-variant": "#4a4455",
+                  "error-container": "#ffdad6",
+                  "surface-container-lowest": "#ffffff",
+                  "secondary-container": "#6cf8bb",
+                  "error": "#ba1a1a",
+                  "surface-container-low": "#f1f3ff",
+                  "primary-container": "#7c3aed",
+                  "on-tertiary-fixed": "#291800",
+                  "tertiary": "#6e4600",
+                  "surface-container": "#e9edff",
+                  "on-tertiary-container": "#ffe1bd",
+                  "on-primary-fixed-variant": "#5a00c6",
+                  "tertiary-fixed-dim": "#ffb955",
+                  "surface-variant": "#dce2f7",
+                  "on-secondary-fixed-variant": "#005236",
+                  "tertiary-fixed": "#ffddb4",
+                  "on-primary-fixed": "#25005a",
+                  "on-primary": "#ffffff",
+                  "inverse-surface": "#293040",
+                  "on-error-container": "#93000a",
+                  "on-tertiary-fixed-variant": "#633f00"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "xl": "32px",
+                  "lg": "24px",
+                  "margin-desktop": "32px",
+                  "margin-mobile": "16px",
+                  "base": "4px",
+                  "sm": "8px",
+                  "md": "16px",
+                  "xs": "4px",
+                  "gutter": "16px"
+          },
+          "fontFamily": {
+                  "body-lg": ["Plus Jakarta Sans"],
+                  "headline-lg-mobile": ["Plus Jakarta Sans"],
+                  "body-md": ["Plus Jakarta Sans"],
+                  "body-sm": ["Plus Jakarta Sans"],
+                  "label-lg": ["Plus Jakarta Sans"],
+                  "headline-lg": ["Plus Jakarta Sans"],
+                  "label-md": ["Plus Jakarta Sans"],
+                  "headline-sm": ["Plus Jakarta Sans"],
+                  "display-lg": ["Plus Jakarta Sans"],
+                  "headline-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+                  "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                  "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                  "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                  "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                  "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                  "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                  "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-md h-14 bg-surface/90 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="sports_soccer">sports_soccer</span>
+<h1 class="font-display-lg text-headline-md tracking-tight text-primary">TurfEasePro</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full" data-icon="notifications">notifications</button>
+</div>
+</header>
+<main class="pt-20 px-margin-mobile max-w-md mx-auto">
+<!-- User Welcome -->
+<section class="mb-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Hello, Alex! 👋</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Ready for your next match?</p>
+</section>
+<!-- Upcoming Games Section Header -->
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Upcoming Games</h3>
+<button class="font-label-lg text-label-lg text-primary">View All</button>
+</div>
+<!-- WEATHER ALERT BANNER -->
+<div class="mb-lg bg-tertiary-fixed border border-tertiary-fixed-dim rounded-xl p-md shadow-[0px_4px_20px_rgba(0,0,0,0.05)] flex items-start gap-md relative overflow-hidden">
+<!-- Amber glow effect -->
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary"></div>
+<!-- Icon -->
+<div class="flex-shrink-0">
+<span class="material-symbols-outlined text-[40px] text-tertiary" data-icon="rainy">rainy</span>
+</div>
+<!-- Content -->
+<div class="flex-grow pr-6">
+<h4 class="font-label-lg text-label-lg text-on-tertiary-fixed mb-xs">Rain Alert for Tomorrow</h4>
+<p class="font-body-sm text-body-sm text-on-tertiary-fixed-variant leading-tight">
+          Camp Nou Elite Turf · 18:00 has 75% rain chance.
+        </p>
+<button class="mt-sm inline-flex items-center gap-1 font-label-md text-label-md text-primary font-bold hover:underline transition-all">
+          Reschedule Free
+          <span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Dismiss Button -->
+<button class="absolute top-2 right-2 text-on-tertiary-fixed-variant opacity-60 hover:opacity-100 transition-opacity p-1">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+</button>
+</div>
+<!-- Upcoming Game Card 1 (The affected one) -->
+<div class="mb-md bg-surface border border-outline-variant rounded-xl p-md">
+<div class="flex justify-between items-start mb-md">
+<div>
+<span class="inline-block px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-md text-label-md mb-xs">Confirmed</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Camp Nou Elite Turf</h4>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="calendar_today">calendar_today</span>
+            Tomorrow, 18:00 - 19:30
+          </div>
+</div>
+<img class="w-16 h-16 rounded-lg object-cover" data-alt="A high-angle close-up shot of professional green artificial turf under bright stadium lighting. The blades of grass are crisp and perfectly manicured, showing the vibrant texture of a premium soccer pitch. The atmosphere is energetic and focused on high-performance athletics, consistent with a modern sports booking platform's aesthetic. Soft ambient shadows define the depth of the field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3ekn-zceO1CPdzfPJputqmUitxV3q772OB1fVfcHhkFU5mAdlX2c90ULnVYVwR92h-cDFXH7GlAZ3gTrvfCZT-y5qQebHEG_Bx30n9zakk1xmhZWIdrwPRXMklQV9O_oEXZ5F-IldUf3ifMofVIw9DK0YSZND9QT9lvXNpJvkaZ2nSZLjcTML2B-x2d5VkmyzELOdIzeBnVISCkxxdlnOXHb-0Ybh-aAmiwFZ-1t3BmisuQ6W5pYGlND2Cn6QdU2mA8ArOrboJqEG"/>
+</div>
+<div class="flex items-center justify-between pt-md border-t border-outline-variant">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="A professional headshot of a smiling young man in athletic wear, set against a clean, neutral background. The lighting is soft and even, highlighting a friendly and reliable user persona. The overall style is clean and corporate modern, fitting into a high-end sports application interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCza70c65UTpsDCHBRMZtS7ga7F3EOnKj0jjmKbbZr7Q2wHLmZXeAAE3IqRGeyZ9Z9WlTs0gBKkjtsTXfX3zEvmXL40hVhk__wHlflTnoy5NtHzX0sa1wgsoJK4nnrlioES3i6_25u9JJCdzamEW4Y1YJrfat1YwCgwMFvavqRItKh2gj7z2zIe9FZZxq4iHtgO-HuJ3QrvTnd66gbF-KrTjNdsF0COoo9Gv3072D55uIzt5raQQNtXbjHZw0DIcYEjkpgaNBgRUlMR"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="A vibrant portrait of a female athlete with a determined expression, looking directly at the camera. The setting is bright and outdoor, reflecting an active lifestyle. The image is crisp and high-contrast, aligning with the premium athletic branding of the turf booking platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYQf1_mQA3VDcWsBEYSIHFwtltgD9NM0wgGcqKCLzfy0eeEvuvEKAV7hrckmquPSv5QPXEFTKKfqFVAsaS1-IneMngPSOupdpTbj4gMeToXXGo-ULvp6NQkBFt3Zt3GM5s2an54AuR1bLo_lTia4VFGzIGSrhjuxEGGr5bdNxJO3c5XH93h0XgwC4q6K_OgucfopV1GQjnkrf_zIY2gIPa4j7_QmaR5frVe3lluaEx6MjkMwl6H9VhGHy80eZycgHUGi6_wqTpEeyD"/>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-surface flex items-center justify-center font-label-md text-label-md text-on-surface-variant">+8</div>
+</div>
+<button class="bg-primary text-on-primary font-label-lg text-label-lg px-lg h-10 rounded-xl hover:bg-primary-container active:scale-95 transition-all">
+          Manage Game
+        </button>
+</div>
+</div>
+<!-- Quick Actions Bento -->
+<div class="grid grid-cols-2 gap-md">
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md flex flex-col items-center justify-center text-center gap-sm aspect-square hover:bg-surface-container transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface">Book New</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md flex flex-col items-center justify-center text-center gap-sm aspect-square hover:bg-surface-container transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-primary-fixed-dim flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface">Split Pay</span>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-md pb-safe pt-2 bg-surface/95 backdrop-blur-lg border-t border-outline-variant shadow-[0px_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1 active:scale-90 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-high transition-all active:scale-90 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-md text-label-md">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-high transition-all active:scale-90 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-md text-label-md">Bookings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-high transition-all active:scale-90 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+</body></html>

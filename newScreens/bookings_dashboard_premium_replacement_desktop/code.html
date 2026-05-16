@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TurfEasePro Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#4edea3",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#8e5c00",
+                    "outline-variant": "#ccc3d8",
+                    "on-secondary-container": "#00714d",
+                    "surface-container-highest": "#dce2f7",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#dce2f7",
+                    "primary-container": "#7c3aed",
+                    "surface": "#f9f9ff",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#d2bbff",
+                    "on-tertiary-fixed": "#291800",
+                    "inverse-surface": "#293040",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#d2bbff",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "tertiary": "#6e4600",
+                    "on-tertiary": "#ffffff",
+                    "background": "#f9f9ff",
+                    "tertiary-fixed": "#ffddb4",
+                    "on-surface-variant": "#4a4455",
+                    "on-surface": "#141b2b",
+                    "on-background": "#141b2b",
+                    "on-primary-container": "#ede0ff",
+                    "secondary-fixed": "#6ffbbe",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#e9edff",
+                    "surface-container-high": "#e1e8fd",
+                    "secondary-container": "#6cf8bb",
+                    "tertiary-fixed-dim": "#ffb955",
+                    "surface-bright": "#f9f9ff",
+                    "surface-container-low": "#f1f3ff",
+                    "on-tertiary-container": "#ffe1bd",
+                    "surface-tint": "#732ee4",
+                    "inverse-on-surface": "#edf0ff",
+                    "primary-fixed": "#eaddff",
+                    "on-tertiary-fixed-variant": "#633f00",
+                    "surface-dim": "#d3daef",
+                    "secondary": "#006c49",
+                    "on-secondary-fixed": "#002113",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#005236",
+                    "on-primary-fixed": "#25005a",
+                    "outline": "#7b7487",
+                    "primary": "#630ed4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "xl": "32px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "base": "4px",
+                    "md": "16px",
+                    "margin-desktop": "32px",
+                    "sm": "8px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "label-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar Navigation Shell -->
+<header class="w-full top-0 sticky bg-surface border-b border-outline-variant z-40">
+<div class="flex justify-between items-center h-16 px-md md:px-margin-desktop max-w-7xl mx-auto">
+<div class="text-headline-md font-headline-md text-primary tracking-tight">TurfEasePro</div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1 hover:text-primary transition-colors" href="#">Browse</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors" href="#">Venues</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors" href="#">Tournaments</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" data-alt="A professional close-up portrait of a young athletic man with a friendly expression. He is set against a clean, softly blurred modern office background with neutral gray and white tones. The lighting is bright and high-key, reflecting a premium corporate aesthetic that matches the purple-accented design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDib_Krnfg6q-9qO83umoi-BC3C6pdWpfSkKqNcxA_e8uZv_u61JuhLHbcAwCF7CFeh_Wj9rJYykVD1IkZ65nX8jhQ-G6lq_w7KsYXuElt6E6YyueYoTrYd3pWpb_AW8HyJJzNbnZiaEcxFPpKQGwRB40cWOaG67cX4AAP5ZI3mMoTTS2QLoyNbEYDrxLeUcf6ubwKdNIyyRYvdzS5inl_84lN1mdl4yIAJjlk6z6fV6HNwu9g8vWsdj7QESlvLpdS5LSriYXbCJJ5c"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow max-w-7xl mx-auto w-full px-md md:px-margin-desktop py-xl">
+<!-- Welcome Section & Stats Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg mb-xl">
+<!-- Welcome Card -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-xl border border-outline-variant relative overflow-hidden flex flex-col justify-between min-h-[240px]">
+<div class="z-10">
+<h1 class="font-headline-lg text-headline-lg md:text-display-lg mb-sm">Welcome back, Alex!</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">Ready to dominate the pitch today? Your teammates are waiting for you to lead.</p>
+</div>
+<div class="z-10 mt-lg">
+<button class="bg-primary text-on-primary font-label-lg text-label-lg px-xl py-4 rounded-xl shadow-md hover:opacity-90 active:scale-95 transition-all flex items-center gap-sm w-fit">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+                        Book New Turf
+                    </button>
+</div>
+<!-- Abstract Design Element -->
+<div class="absolute right-[-10%] top-[-10%] w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="absolute right-4 bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]">sports_soccer</span>
+</div>
+</div>
+<!-- Stats Stack -->
+<div class="md:col-span-4 grid grid-cols-1 gap-md">
+<div class="bg-surface-container-low rounded-xl p-md border border-outline-variant flex items-center gap-md">
+<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Total Bookings</p>
+<p class="font-headline-sm text-headline-sm">24</p>
+</div>
+</div>
+<div class="bg-secondary-container/20 rounded-xl p-md border border-secondary-container/40 flex items-center gap-md">
+<div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">upcoming</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-secondary-fixed-variant">Upcoming</p>
+<p class="font-headline-sm text-headline-sm">3</p>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-md border border-outline-variant flex items-center gap-md">
+<div class="w-12 h-12 bg-error-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">cancel</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Cancelled</p>
+<p class="font-headline-sm text-headline-sm">1</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Upcoming Bookings Section -->
+<section>
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-headline-md text-headline-md">Upcoming Bookings</h2>
+<button class="text-primary font-label-lg text-label-lg hover:underline transition-all">View All</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-lg">
+<!-- Booking Card 1 -->
+<div class="bg-surface rounded-xl border border-outline-variant overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-md transition-shadow">
+<div class="w-full md:w-48 h-48 md:h-auto shrink-0 relative">
+<img alt="Professional Soccer Turf" class="w-full h-full object-cover" data-alt="A wide-angle shot of a pristine professional indoor soccer turf at night. The artificial grass is vibrant green and perfectly groomed. Bright overhead floodlights create strong highlights and a high-performance athletic atmosphere. The background shows blurred sports equipment and stadium-style architecture, reinforcing a sense of premium quality and energetic competition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFjYq4YKgyv26VyAB_AOhFumf24Uln7lBwf3tGkNoTKbZV7jB7J-3Ws1qYuL8AxSImEFmH8Z8gqr0nvG5j80OYS-Ogc6RtgRk5DbUm2yCJ7Me9ApfczYhkTX6v0WJOjioqOn02GDG4I-wQrf8N_sEdZEFmbOpZxIYntcudT8AkUOrs2nicz0pEabke4t_h6mZ1wsL20pI6ampuCHL6ErNeftM_KHQz5YeMMOVgUVGT5vDt_6cA83fJNahspGcE4B52qmEp6_pq2VLp"/>
+<div class="absolute top-2 left-2 bg-secondary text-on-secondary text-[10px] px-2 py-1 rounded font-bold uppercase tracking-wider">Confirmed</div>
+</div>
+<div class="p-md flex flex-col justify-between flex-grow">
+<div>
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-sm text-headline-sm">Arena One Sports Center</h3>
+<p class="text-primary font-bold">$45.00</p>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant font-body-sm text-body-sm mb-md">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span>Downtown, East Side</span>
+</div>
+<div class="flex gap-md border-t border-outline-variant pt-md mb-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Date</span>
+<span class="font-label-lg text-label-lg">Oct 12, 2024</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Time</span>
+<span class="font-label-lg text-label-lg">07:00 PM</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="bg-primary text-on-primary font-label-lg text-label-lg py-2 px-md rounded-lg flex-grow hover:opacity-90 active:scale-95 transition-all">
+                                Details
+                            </button>
+<button class="border border-primary text-primary font-label-lg text-label-lg py-2 px-md rounded-lg flex items-center justify-center gap-xs hover:bg-primary-container/10 transition-all">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+                                Split
+                            </button>
+</div>
+</div>
+</div>
+<!-- Booking Card 2 -->
+<div class="bg-surface rounded-xl border border-outline-variant overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-md transition-shadow">
+<div class="w-full md:w-48 h-48 md:h-auto shrink-0 relative">
+<img alt="Luxury Tennis Court" class="w-full h-full object-cover" data-alt="A close-up perspective of a professional clay tennis court under warm late afternoon sunlight. The red clay surface is textured and detailed, with crisp white lines leading toward the net. The lighting is golden and soft, creating a serene yet focused mood. The scene conveys a high-end, premium sports environment with a focus on precision and athletic excellence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPzcZw5BieNm1-XGl8ZRf574clt2ZE2a0_Uu0ygdthw6zftS4WXFOFJavV-kf24x-MLajS5QPHOpjScdNUMZgD1jLz5av_TKTRxtHiFUjgRrGL37i0-kMfPPFhclIyjakN_9r7j7QwQgvaPXa48b4q5NJnOIdnl2eaAXDFbktt8A8AatcHSU1_Lx5-bFVHn92W24-RdkcNFUCwI-u6c6rgjWdjfmy4J_-TkjxcEEz9KibvnajinBGHqSpooWUKJvFrulrTujP_Qzo1"/>
+<div class="absolute top-2 left-2 bg-primary text-on-primary text-[10px] px-2 py-1 rounded font-bold uppercase tracking-wider">Payment Pending</div>
+</div>
+<div class="p-md flex flex-col justify-between flex-grow">
+<div>
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-sm text-headline-sm">The Grand Courts</h3>
+<p class="text-primary font-bold">$30.00</p>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant font-body-sm text-body-sm mb-md">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span>West Boulevard, 14th Ave</span>
+</div>
+<div class="flex gap-md border-t border-outline-variant pt-md mb-md">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Date</span>
+<span class="font-label-lg text-label-lg">Oct 15, 2024</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Time</span>
+<span class="font-label-lg text-label-lg">09:00 AM</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="bg-primary text-on-primary font-label-lg text-label-lg py-2 px-md rounded-lg flex-grow hover:opacity-90 active:scale-95 transition-all">
+                                Pay Now
+                            </button>
+<button class="border border-primary text-primary font-label-lg text-label-lg py-2 px-md rounded-lg flex items-center justify-center gap-xs hover:bg-primary-container/10 transition-all">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+                                Split
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Payment Chips / Quick Actions -->
+<section class="mt-xl">
+<h2 class="font-headline-sm text-headline-sm mb-md">Quick Split Tools</h2>
+<div class="flex flex-wrap gap-md">
+<button class="bg-surface-container-high text-on-surface font-label-lg text-label-lg px-lg py-3 rounded-xl border border-outline-variant hover:border-primary hover:text-primary transition-all">Equally</button>
+<button class="bg-surface-container-high text-on-surface font-label-lg text-label-lg px-lg py-3 rounded-xl border border-outline-variant hover:border-primary hover:text-primary transition-all">By %</button>
+<button class="bg-surface-container-high text-on-surface font-label-lg text-label-lg px-lg py-3 rounded-xl border border-outline-variant hover:border-primary hover:text-primary transition-all">Custom</button>
+<button class="bg-surface-container-high text-on-surface font-label-lg text-label-lg px-lg py-3 rounded-xl border border-outline-variant hover:border-primary hover:text-primary transition-all">Repeat Group</button>
+</div>
+</section>
+<!-- Reference Canvas Image -->
+<div class="mt-xl rounded-xl overflow-hidden border border-outline-variant shadow-lg grayscale hover:grayscale-0 transition-all duration-700">
+<div class="bg-surface-container-low px-md py-2 border-b border-outline-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">info</span>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Inspiration: Old Dashboard Reference</p>
+</div>
+<img alt="Previous Dashboard Reference" class="w-full h-auto max-h-[400px] object-cover opacity-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA19Hh2snCMYg3UCdDrjhDFCNvLgP7VBW_fSKA8QVuwYWCwfRLOxRVP6yTinSji2sW8ze9fvjZwKerj-edfqwhRfrsAyAtfVvEjNq85oGQ_9NZT-NKSOWPo8Sw6sAWCPiAgc1_z4MvcP84X-Wqc4txykbhkK7uHYUuHDv9EGXTFn0qF-DPR60EmFWqkT00QJNGj8Dp2ONdzPuDisujy2StTr6UfEqmUzJf_VV0F5NSW9efvjsP47Ulpo92N0ebmej3tbGXcV10EjnBs"/>
+</div>
+</main>
+<!-- Footer Navigation Shell -->
+<footer class="hidden md:flex flex-col items-center gap-md px-margin-desktop w-full mt-auto py-xl bg-surface-container-lowest border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center w-full max-w-7xl">
+<div class="font-headline-sm text-headline-sm text-primary mb-md md:mb-0">TurfEasePro</div>
+<div class="flex gap-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline transition-all" href="#">Terms</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline transition-all" href="#">Privacy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline transition-all" href="#">Support</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline transition-all" href="#">Partners</a>
+</div>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-md">
+            © 2024 TurfEasePro. Athletic Excellence.
+        </div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-sm py-2 md:hidden bg-surface shadow-[0px_-4px_20px_rgba(0,0,0,0.05)] z-50 rounded-t-xl">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-md text-label-md">Explore</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high">
+<span class="material-symbols-outlined">event_available</span>
+<span class="font-label-md text-label-md">Bookings</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</button>
+</nav>
+<!-- Contextual FAB (Mobile Only) -->
+<button class="md:hidden fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center z-40 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+</body></html>
