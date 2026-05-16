@@ -3,13 +3,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { turfService } from '../services/turf.service';
 import { bookingService } from '../services/booking.service';
+import { officialApi } from '../services/officialApi';
 import { useAuthStore } from '../stores/auth.store';
 import { Turf } from '../types';
 import { format } from 'date-fns';
 
 const MapView = lazy(() => import('../components/MapView'));
 
-type SidebarItem = 'dashboard' | 'turfs' | 'add' | 'bookings' | 'reviews';
+type SidebarItem = 'dashboard' | 'turfs' | 'add' | 'bookings' | 'reviews' | 'officials';
 
 const SPORTS_LIST = ['Football', 'Cricket', 'Basketball', 'Badminton', 'Tennis', 'Volleyball', 'Hockey'];
 const AMENITIES_LIST = ['Parking', 'Showers', 'Cafeteria', 'Floodlights', 'Changing Rooms', 'First Aid', 'Equipment Rental'];
@@ -19,6 +20,33 @@ const PartnerDashboardPage: React.FC = () => {
   const { user, logout } = useAuthStore();
   const queryClient = useQueryClient();
   const [active, setActive] = useState<SidebarItem>('dashboard');
+
+  const [officialForm, setOfficialForm] = useState({
+    name: '', role: 'referee' as 'referee' | 'coach', sports: [] as string[], pricePerHour: '', bio: '',
+  });
+
+  const { data: myOfficials = [], refetch: refetchOfficials } = useQuery({
+    queryKey: ['my-officials'],
+    queryFn: officialApi.getMyOfficials,
+  });
+
+  const addOfficialMutation = useMutation({
+    mutationFn: (data: any) => officialApi.register(data),
+    onSuccess: () => {
+      toast.success('Professional added!');
+      refetchOfficials();
+      setOfficialForm({ name: '', role: 'referee', sports: [], pricePerHour: '', bio: '' });
+    },
+    onError: (err: any) => toast.error(err.response?.data?.message || 'Failed to add professional'),
+  });
+
+  const handleSubmitOfficial = () => {
+    if (!officialForm.name || !officialForm.pricePerHour || officialForm.sports.length === 0) {
+      toast.error('Please fill name, price and at least one sport');
+      return;
+    }
+    addOfficialMutation.mutate({ ...officialForm, pricePerHour: Number(officialForm.pricePerHour) });
+  };
 
   const [form, setForm] = useState({
     name: '', address: '', pricePerHour: '', surfaceType: 'Synthetic Grass',
@@ -84,6 +112,7 @@ const PartnerDashboardPage: React.FC = () => {
     { key: 'add', label: 'Add New Turf', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg> },
     { key: 'bookings', label: 'Bookings', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> },
     { key: 'reviews', label: 'Reviews', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg> },
+    { key: 'officials', label: 'Officials', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> },
   ];
 
   return (
@@ -473,6 +502,138 @@ const PartnerDashboardPage: React.FC = () => {
               <div className="text-center py-16 bg-white dark:bg-dark-surface rounded-2xl shadow-card">
                 <div className="text-5xl mb-4">⭐</div>
                 <p className="text-neutral-400 dark:text-dark-muted">Reviews for your turfs will appear here</p>
+              </div>
+            </div>
+          )}
+
+          {/* Officials */}
+          {active === 'officials' && (
+            <div>
+              <h1 className="text-xl font-bold text-neutral-900 dark:text-dark-text mb-1">Manage Professionals</h1>
+              <p className="text-sm text-neutral-500 dark:text-dark-muted mb-6">Add referees and coaches available for booking add-ons.</p>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Add form */}
+                <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-card p-5 space-y-4">
+                  <h2 className="font-semibold text-neutral-900 dark:text-dark-text">Add New Professional</h2>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-700 dark:text-dark-text mb-1.5">Full Name *</label>
+                    <input
+                      value={officialForm.name}
+                      onChange={e => setOfficialForm(f => ({ ...f, name: e.target.value }))}
+                      placeholder="e.g. Rahul Sharma"
+                      className="w-full px-3.5 py-2.5 border border-neutral-200 dark:border-dark-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 bg-white dark:bg-dark-input dark:text-dark-text dark:placeholder-neutral-600"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-700 dark:text-dark-text mb-1.5">Role *</label>
+                    <div className="flex gap-2">
+                      {(['referee', 'coach'] as const).map(r => (
+                        <button
+                          key={r}
+                          onClick={() => setOfficialForm(f => ({ ...f, role: r }))}
+                          className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border transition-all capitalize ${
+                            officialForm.role === r
+                              ? r === 'referee' ? 'bg-green-600 text-white border-green-600' : 'bg-amber-500 text-white border-amber-500'
+                              : 'border-neutral-200 dark:border-dark-border text-neutral-600 dark:text-dark-muted hover:bg-neutral-50 dark:hover:bg-dark-elevated'
+                          }`}
+                        >
+                          {r === 'referee' ? '🟢 Referee' : '🟡 Coach'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-700 dark:text-dark-text mb-1.5">Sports *</label>
+                    <div className="flex flex-wrap gap-2">
+                      {SPORTS_LIST.map(s => (
+                        <button
+                          key={s}
+                          onClick={() => {
+                            const updated = officialForm.sports.includes(s)
+                              ? officialForm.sports.filter(x => x !== s)
+                              : [...officialForm.sports, s];
+                            setOfficialForm(f => ({ ...f, sports: updated }));
+                          }}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                            officialForm.sports.includes(s)
+                              ? 'bg-primary-600 text-white border-primary-600'
+                              : 'border-neutral-200 dark:border-dark-border text-neutral-600 dark:text-dark-muted hover:border-primary-300'
+                          }`}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-700 dark:text-dark-text mb-1.5">Session Fee (₹/hr) *</label>
+                    <input
+                      type="number"
+                      value={officialForm.pricePerHour}
+                      onChange={e => setOfficialForm(f => ({ ...f, pricePerHour: e.target.value }))}
+                      placeholder="e.g. 500"
+                      className="w-full px-3.5 py-2.5 border border-neutral-200 dark:border-dark-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 bg-white dark:bg-dark-input dark:text-dark-text dark:placeholder-neutral-600"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-700 dark:text-dark-text mb-1.5">Bio</label>
+                    <textarea
+                      value={officialForm.bio}
+                      onChange={e => setOfficialForm(f => ({ ...f, bio: e.target.value }))}
+                      rows={3}
+                      placeholder="Brief description of experience..."
+                      className="w-full px-3.5 py-2.5 border border-neutral-200 dark:border-dark-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary-500/30 resize-none bg-white dark:bg-dark-input dark:text-dark-text dark:placeholder-neutral-600"
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleSubmitOfficial}
+                    disabled={addOfficialMutation.isLoading}
+                    className="w-full py-3 bg-primary-600 text-white font-semibold text-sm rounded-xl hover:bg-primary-700 transition-colors disabled:opacity-60"
+                  >
+                    {addOfficialMutation.isLoading ? 'Adding...' : '+ Add Professional'}
+                  </button>
+                </div>
+
+                {/* Existing officials list */}
+                <div>
+                  <h2 className="font-semibold text-neutral-900 dark:text-dark-text mb-3">Your Professionals ({myOfficials.length})</h2>
+                  {myOfficials.length === 0 ? (
+                    <div className="text-center py-16 bg-white dark:bg-dark-surface rounded-2xl shadow-card">
+                      <div className="text-4xl mb-3">👤</div>
+                      <p className="text-sm text-neutral-400 dark:text-dark-muted">No professionals added yet</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {myOfficials.map((o: any) => (
+                        <div key={o._id} className="bg-white dark:bg-dark-surface rounded-2xl shadow-card p-4 flex items-center gap-4">
+                          <div
+                            className="w-12 h-12 rounded-full flex items-center justify-center text-white text-base font-bold flex-shrink-0"
+                            style={{ backgroundColor: ['#7C3AED','#059669','#DC2626','#D97706'][o.name.charCodeAt(0) % 4] }}
+                          >
+                            {o.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-neutral-900 dark:text-dark-text text-sm">{o.name}</p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${o.role === 'referee' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                                {o.role.toUpperCase()}
+                              </span>
+                              <span className="text-xs text-neutral-400 dark:text-dark-muted">{o.sports.slice(0, 2).join(', ')}</span>
+                            </div>
+                          </div>
+                          <p className="text-sm font-bold text-primary-600 flex-shrink-0">₹{o.pricePerHour}/hr</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}

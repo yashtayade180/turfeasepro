@@ -24,6 +24,12 @@ export const officialApi = {
   list: (params?: { sport?: string; role?: string }) =>
     api.get<Official[]>('/officials', { params }).then(r => r.data),
 
+  register: (data: { name: string; role: string; sports: string[]; pricePerHour: number; bio?: string }) =>
+    api.post<Official>('/officials', data).then(r => r.data),
+
+  getMyOfficials: () =>
+    api.get<Official[]>('/officials/mine').then(r => r.data),
+
   getById: (id: string) =>
     api.get<Official>(`/officials/${id}`).then(r => r.data),
 
