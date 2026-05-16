@@ -49,6 +49,16 @@ const BottomNav: React.FC = () => {
         </svg>
       ),
     },
+    ...(isAuthenticated && user?.role === 'user' ? [{
+      label: 'Matches',
+      path: '/matches',
+      exact: false,
+      icon: (active: boolean) => (
+        <svg className="w-6 h-6" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 1.8} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16 8v8m-4-5v5m-4-2v2M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      ),
+    }] : []),
     {
       label: 'Profile',
       path: isAuthenticated ? '/profile' : '/login',
@@ -164,6 +174,14 @@ const Navbar: React.FC = () => {
                   >
                     {user?.role === 'partner' ? 'My Dashboard' : user?.role === 'admin' ? 'Admin Panel' : 'My Bookings'}
                   </Link>
+                  {user?.role === 'user' && (
+                    <Link
+                      to="/matches"
+                      className={`text-sm font-medium transition-colors ${location.pathname === '/matches' ? 'text-primary-600' : 'text-neutral-600 dark:text-dark-muted hover:text-primary-600'}`}
+                    >
+                      Matches
+                    </Link>
+                  )}
                   <div className="flex items-center gap-2">
                     <button className="p-2 text-neutral-400 dark:text-dark-muted hover:text-neutral-600 dark:hover:text-dark-text transition-colors">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

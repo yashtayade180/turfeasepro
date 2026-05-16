@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 import { bookingService } from '../services/booking.service';
-import { matchApi, MatchPlayer } from '../services/matchApi';
+import { matchApi } from '../services/matchApi';
 
 const AVATAR_COLORS = ['#7C3AED', '#059669', '#DC2626', '#D97706', '#2563EB', '#DB2777'];
 const avatarColor = (name: string) => AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
