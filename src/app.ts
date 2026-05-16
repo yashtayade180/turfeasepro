@@ -9,6 +9,9 @@ import { userRoutes } from "./modules/users/user.routes";
 import { authController } from "./modules/auth/auth.controller";
 import { adminRoutes } from "./modules/admin/admin.controller";
 import { splitRoutes } from "./modules/splits/split.routes";
+import { matchRoutes } from "./modules/matches/match.routes";
+import { officialRoutes } from "./modules/officials/official.routes";
+import { weatherRoutes } from "./modules/weather/weather.routes";
 
 const buildApp = () => {
   const app = Fastify({ logger: true });
@@ -27,6 +30,9 @@ const buildApp = () => {
   app.register(userRoutes, { prefix: "/api/users" });
   app.register(adminRoutes, { prefix: "/api" });
   app.register(splitRoutes, { prefix: "/api/splits" });
+  app.register(matchRoutes, { prefix: "/api/matches" });
+  app.register(officialRoutes, { prefix: "/api/officials" });
+  app.register(weatherRoutes, { prefix: "/api/weather" });
 
   return app;
 };
