@@ -7,7 +7,7 @@ import { bookingService } from '../services/booking.service';
 import { reviewService } from '../services/review.service';
 import { weatherApi, HourlyWeather } from '../services/weatherApi';
 import { useAuthStore } from '../stores/auth.store';
-import { format, addDays, startOfDay } from 'date-fns';
+import { format, addDays, startOfDay, isToday } from 'date-fns';
 
 const MapView = lazy(() => import('../components/MapView'));
 
@@ -92,8 +92,10 @@ const TurfDetailPage: React.FC = () => {
     onError: (err: any) => { toast.error(err.response?.data?.message || 'Failed to submit review'); },
   });
 
+  const isSlotPast = (hour: number) => isToday(selectedDate) && hour <= new Date().getHours();
+
   const toggleSlot = (hour: number) => {
-    if (isSlotBooked(hour, bookedSlots)) return;
+    if (isSlotBooked(hour, bookedSlots) || isSlotPast(hour)) return;
     setSelectedSlots(prev =>
       prev.includes(hour) ? prev.filter(h => h !== hour) : [...prev, hour].sort((a, b) => a - b)
     );
@@ -301,6 +303,8 @@ const TurfDetailPage: React.FC = () => {
                 <div className="space-y-2">
                   {HOUR_SLOTS.map(hour => {
                     const booked = isSlotBooked(hour, bookedSlots);
+                    const isPast = isSlotPast(hour);
+                    const disabled = booked || isPast;
                     const selected = selectedSlots.includes(hour);
                     const hw = getSlotWeather(hour);
                     const badge = weatherBadge(hw);
@@ -308,9 +312,9 @@ const TurfDetailPage: React.FC = () => {
                       <div key={hour}>
                         <button
                           onClick={() => toggleSlot(hour)}
-                          disabled={booked}
+                          disabled={disabled}
                           className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                            booked
+                            disabled
                               ? 'bg-neutral-100 dark:bg-dark-elevated text-neutral-300 dark:text-neutral-700 cursor-not-allowed'
                               : selected
                               ? 'bg-violet-50 dark:bg-violet-900/20 border-2 border-violet-600 text-violet-700 dark:text-violet-300'
@@ -319,8 +323,9 @@ const TurfDetailPage: React.FC = () => {
                         >
                           <div className="flex flex-col items-start">
                             <span className="font-semibold">{formatHour(hour)} – {formatHour(hour + 1)}</span>
-                            {!booked && <span className="text-neutral-400 dark:text-dark-muted text-[10px]">Available</span>}
+                            {!disabled && <span className="text-neutral-400 dark:text-dark-muted text-[10px]">Available</span>}
                             {booked && <span className="text-[10px]">Fully Booked</span>}
+                            {isPast && !booked && <span className="text-[10px]">Past</span>}
                           </div>
                           <div className="flex items-center gap-2">
                             {badge && !booked && (
