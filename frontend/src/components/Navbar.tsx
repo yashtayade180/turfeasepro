@@ -141,13 +141,13 @@ const Navbar: React.FC = () => {
 
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-6">
-              <Link to="/turfs" className={`text-sm font-medium transition-colors ${location.pathname === '/turfs' ? 'text-primary-600' : 'text-neutral-600 dark:text-dark-muted hover:text-primary-600'}`}>
+              <Link data-tour="desktop-nav-browse" to="/turfs" className={`text-sm font-medium transition-colors ${location.pathname === '/turfs' ? 'text-primary-600' : 'text-neutral-600 dark:text-dark-muted hover:text-primary-600'}`}>
                 Browse
               </Link>
               <Link to="/turfs" className="text-sm font-medium text-neutral-600 dark:text-dark-muted hover:text-primary-600 transition-colors">
                 Venues
               </Link>
-              <Link to="/turfs" className="text-sm font-medium text-neutral-600 dark:text-dark-muted hover:text-primary-600 transition-colors">
+              <Link data-tour="desktop-nav-matches" to="/matches" className="text-sm font-medium text-neutral-600 dark:text-dark-muted hover:text-primary-600 transition-colors">
                 Tournaments
               </Link>
             </div>
@@ -193,6 +193,7 @@ const Navbar: React.FC = () => {
                       </svg>
                     </button>
                     <button
+                      data-tour="desktop-profile"
                       onClick={handleLogout}
                       className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-semibold hover:bg-primary-700 transition-colors"
                     >

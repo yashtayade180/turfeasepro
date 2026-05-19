@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Joyride } from 'react-joyride';
 import { bookingService } from '../services/booking.service';
 import { useAuthStore } from '../stores/auth.store';
 import { Booking } from '../types';
@@ -10,6 +9,7 @@ import { format, isToday, isTomorrow } from 'date-fns';
 import { splitApi, SplitPayment } from '../services/splitApi';
 import { weatherApi, WeatherForecast } from '../services/weatherApi';
 import { useTour, TOUR_STEPS } from '../hooks/useTour';
+import { TourOverlay } from '../components/TourOverlay';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -200,7 +200,7 @@ const QuickSplitTools: React.FC<{
 const DashboardPage: React.FC = () => {
   const { user } = useAuthStore();
   const navigate = useNavigate();
-  const { run, stepIndex, startTour, handleCallback } = useTour(user?.id);
+  const { run, stepIndex, startTour, next, back, finish, skip } = useTour(user?.id);
   const [splitting, setSplitting] = useState<string | null>(null);
 
   const { data: bookings = [], isLoading } = useQuery<Booking[]>({
@@ -251,19 +251,14 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F4FA] dark:bg-dark-bg pb-20 md:pb-0">
-      <Joyride
+      <TourOverlay
         steps={TOUR_STEPS}
         run={run}
         stepIndex={stepIndex}
-        continuous
-        onEvent={handleCallback}
-        options={{ primaryColor: '#7c3aed', zIndex: 10000 }}
-        styles={{
-          tooltip: { borderRadius: 16, fontSize: 14 },
-          buttonPrimary: { borderRadius: 10, fontWeight: 600, backgroundColor: '#7c3aed' },
-          buttonBack: { color: '#6b7280' },
-          buttonSkip: { color: '#9ca3af' },
-        }}
+        onNext={next}
+        onBack={back}
+        onSkip={skip}
+        onFinish={finish}
       />
 
       {/* ── MOBILE ──────────────────────────────────────────────────────────── */}
@@ -458,7 +453,7 @@ const DashboardPage: React.FC = () => {
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div data-tour="desktop-stats" className="grid grid-cols-3 gap-4 mb-8">
           {[
             { label: 'Total Bookings', value: bookings.length, emoji: '📋', valueClass: 'text-neutral-900 dark:text-dark-text' },
             { label: 'Upcoming', value: upcoming.length, emoji: '📅', valueClass: 'text-green-600' },
@@ -477,7 +472,7 @@ const DashboardPage: React.FC = () => {
         </div>
 
         {/* Upcoming Bookings */}
-        <div className="flex items-center justify-between mb-4">
+        <div data-tour="desktop-upcoming" className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-neutral-900 dark:text-dark-text">Upcoming Bookings</h2>
           <Link to="/turfs" className="text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
             View All →
