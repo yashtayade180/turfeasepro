@@ -26,21 +26,18 @@ export const TOUR_STEPS: TourStep[] = [
   {
     mobileTarget: '[data-tour="nav-browse"]',
     desktopTarget: '[data-tour="desktop-nav-browse"]',
-    placement: 'top',
     title: '🏟️ Find a Turf',
     content: 'Browse and filter turfs near you. Each listing shows live weather badges on time slots.',
   },
   {
     mobileTarget: '[data-tour="nav-matches"]',
     desktopTarget: '[data-tour="desktop-nav-matches"]',
-    placement: 'top',
     title: '📊 Match History',
     content: 'Log scores after every game, track your win rate, and climb the leaderboard.',
   },
   {
     mobileTarget: '[data-tour="nav-profile"]',
     desktopTarget: '[data-tour="desktop-profile"]',
-    placement: 'top',
     title: '👤 Your Profile',
     content: "Update your details and preferences here. You're all set — go book your first game! 🎉",
   },

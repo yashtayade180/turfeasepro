@@ -94,20 +94,20 @@ export const TourOverlay: React.FC<Props> = ({
       width: Math.min(340, vw - 32),
       zIndex: 10002,
     };
-  } else if (rect && (cy > vh * 0.62 || step.placement === 'top')) {
-    // tooltip above target
+  } else if (rect && cy > vh * 0.55) {
+    // element in lower half → tooltip above it
     tipStyle = {
       position: 'fixed',
-      bottom: vh - rect.top + 14,
+      bottom: vh - rect.top + 12,
       left: safeLeft,
       width: Math.min(TW, vw - 32),
       zIndex: 10002,
     };
   } else {
-    // tooltip below target
+    // element in upper half → tooltip below it
     tipStyle = {
       position: 'fixed',
-      top: rect ? rect.bottom + 14 : 0,
+      top: rect ? rect.bottom + 12 : 0,
       left: safeLeft,
       width: Math.min(TW, vw - 32),
       zIndex: 10002,
