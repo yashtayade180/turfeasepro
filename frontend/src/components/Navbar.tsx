@@ -33,6 +33,7 @@ const BottomNav: React.FC = () => {
       label: 'Search',
       path: '/turfs',
       exact: false,
+      tourId: 'nav-browse',
       icon: (active: boolean) => (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 1.8} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" />
@@ -53,6 +54,7 @@ const BottomNav: React.FC = () => {
       label: 'Matches',
       path: '/matches',
       exact: false,
+      tourId: 'nav-matches',
       icon: (active: boolean) => (
         <svg className="w-6 h-6" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 1.8} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M16 8v8m-4-5v5m-4-2v2M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -63,6 +65,7 @@ const BottomNav: React.FC = () => {
       label: 'Profile',
       path: isAuthenticated ? '/profile' : '/login',
       exact: false,
+      tourId: 'nav-profile',
       icon: (active: boolean) => (
         <svg className="w-6 h-6" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={active ? 0 : 1.8} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
@@ -82,6 +85,7 @@ const BottomNav: React.FC = () => {
             <Link
               key={tab.label}
               to={tab.path}
+              data-tour={(tab as any).tourId}
               className={`flex flex-col items-center gap-0.5 px-4 py-2 transition-colors ${
                 active ? 'text-primary-600' : 'text-neutral-400 dark:text-dark-muted'
               }`}

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { Joyride } from 'react-joyride';
 import { bookingService } from '../services/booking.service';
 import { useAuthStore } from '../stores/auth.store';
 import { Booking } from '../types';
 import { format, isToday, isTomorrow } from 'date-fns';
 import { splitApi, SplitPayment } from '../services/splitApi';
 import { weatherApi, WeatherForecast } from '../services/weatherApi';
+import { useTour, TOUR_STEPS } from '../hooks/useTour';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -198,6 +200,7 @@ const QuickSplitTools: React.FC<{
 const DashboardPage: React.FC = () => {
   const { user } = useAuthStore();
   const navigate = useNavigate();
+  const { run, stepIndex, startTour, handleCallback } = useTour();
   const [splitting, setSplitting] = useState<string | null>(null);
 
   const { data: bookings = [], isLoading } = useQuery<Booking[]>({
@@ -248,20 +251,43 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F4FA] dark:bg-dark-bg pb-20 md:pb-0">
+      <Joyride
+        steps={TOUR_STEPS}
+        run={run}
+        stepIndex={stepIndex}
+        continuous
+        onEvent={handleCallback}
+        options={{ primaryColor: '#7c3aed', zIndex: 10000 }}
+        styles={{
+          tooltip: { borderRadius: 16, fontSize: 14 },
+          buttonPrimary: { borderRadius: 10, fontWeight: 600, backgroundColor: '#7c3aed' },
+          buttonBack: { color: '#6b7280' },
+          buttonSkip: { color: '#9ca3af' },
+        }}
+      />
 
       {/* ── MOBILE ──────────────────────────────────────────────────────────── */}
       <div className="md:hidden max-w-lg mx-auto px-4 pt-6 pb-8">
 
         {/* Greeting */}
-        <div className="mb-5">
-          <h1 className="text-2xl font-bold text-neutral-900 dark:text-dark-text">
-            Hello, {user?.name?.split(' ')[0]}! 👋
-          </h1>
-          <p className="text-sm text-neutral-500 dark:text-dark-muted mt-0.5">Ready for your next match?</p>
+        <div className="flex items-start justify-between mb-5">
+          <div>
+            <h1 className="text-2xl font-bold text-neutral-900 dark:text-dark-text">
+              Hello, {user?.name?.split(' ')[0]}! 👋
+            </h1>
+            <p className="text-sm text-neutral-500 dark:text-dark-muted mt-0.5">Ready for your next match?</p>
+          </div>
+          <button
+            onClick={startTour}
+            className="w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center text-violet-600 text-sm font-bold hover:bg-violet-200 transition-colors flex-shrink-0 mt-1"
+            title="Take a tour"
+          >
+            ?
+          </button>
         </div>
 
         {/* Upcoming Games header */}
-        <div className="flex items-center justify-between mb-3">
+        <div data-tour="upcoming-games" className="flex items-center justify-between mb-3">
           <h2 className="text-base font-bold text-neutral-900 dark:text-dark-text">Upcoming Games</h2>
           <Link to="/turfs" className="text-xs text-violet-600 font-semibold">View All</Link>
         </div>
@@ -375,7 +401,7 @@ const DashboardPage: React.FC = () => {
         )}
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-3 gap-3">
+        <div data-tour="quick-actions" className="grid grid-cols-3 gap-3">
           <Link to="/turfs" className="bg-white dark:bg-dark-surface rounded-2xl p-4 shadow-card flex flex-col items-center gap-2 hover:shadow-soft transition-shadow">
             <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
