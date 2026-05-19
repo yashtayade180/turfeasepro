@@ -200,7 +200,7 @@ const QuickSplitTools: React.FC<{
 const DashboardPage: React.FC = () => {
   const { user } = useAuthStore();
   const navigate = useNavigate();
-  const { run, stepIndex, startTour, handleCallback } = useTour();
+  const { run, stepIndex, startTour, handleCallback } = useTour(user?.id);
   const [splitting, setSplitting] = useState<string | null>(null);
 
   const { data: bookings = [], isLoading } = useQuery<Booking[]>({

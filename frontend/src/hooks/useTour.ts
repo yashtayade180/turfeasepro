@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { STATUS, EVENTS } from 'react-joyride';
 import type { Step } from 'react-joyride';
 
-const TOUR_KEY = 'turfeasepro_tour_done';
+const tourKey = (userId?: string) =>
+  userId ? `turfeasepro_tour_done_${userId}` : 'turfeasepro_tour_done';
 
 export const TOUR_STEPS: Step[] = [
   {
@@ -43,17 +44,18 @@ export const TOUR_STEPS: Step[] = [
   },
 ];
 
-export function useTour() {
+export function useTour(userId?: string) {
   const [run, setRun] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
 
   useEffect(() => {
-    const done = localStorage.getItem(TOUR_KEY);
+    if (!userId) return;
+    const done = localStorage.getItem(tourKey(userId));
     if (!done) {
       const t = setTimeout(() => setRun(true), 800);
       return () => clearTimeout(t);
     }
-  }, []);
+  }, [userId]);
 
   const startTour = () => {
     setStepIndex(0);
@@ -67,7 +69,7 @@ export function useTour() {
     }
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
       setRun(false);
-      localStorage.setItem(TOUR_KEY, 'true');
+      localStorage.setItem(tourKey(userId), 'true');
     }
   };
 
